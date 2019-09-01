@@ -6,3 +6,5 @@
 * mathtype 上hat
 
 https://zhidao.baidu.com/question/406936260.html
+
+* https://github.com/HuangCongQing/GZHU-Report-Latex-Version
