@@ -10,11 +10,11 @@ https://zhidao.baidu.com/question/406936260.html
 * https://github.com/HuangCongQing/GZHU-Report-Latex-Version
 
 
-### 下载单个文件
+### 下载单个文件夹或文件
 
 http://downgit.zhoudaxiaa.com/
 
-将github文件夹链接复制粘贴入DownGit中，选择download即可;
+将github文件夹或文件**链接**复制粘贴入DownGit中，选择download即可;
 
 
 ### [mohuangrui/*ucasthesis*](https://github.com/mohuangrui/ucasthesis)
