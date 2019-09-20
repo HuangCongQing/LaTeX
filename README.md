@@ -10,6 +10,12 @@ https://zhidao.baidu.com/question/406936260.html
 * https://github.com/HuangCongQing/GZHU-Report-Latex-Version
 
 
+### 下载单个文件
+
+http://downgit.zhoudaxiaa.com/
+
+将github文件夹链接复制粘贴入DownGit中，选择download即可;
+
 
 ### [mohuangrui/*ucasthesis*](https://github.com/mohuangrui/ucasthesis)
 [最新样式] 中国科学院大学学位论文 LaTeX 模板
