@@ -7,9 +7,9 @@
 
 
 
-* [换行\\ 命令]([https://jingyan.baidu.com/article/49ad8bce54d9535835d8fa6e.html](https://jingyan.baidu.com/article/49ad8bce54d9535835d8fa6e.html)
+* [换行`\\` 命令]([https://jingyan.baidu.com/article/49ad8bce54d9535835d8fa6e.html](https://jingyan.baidu.com/article/49ad8bce54d9535835d8fa6e.html)
 )
-* 换页\newpage命令
+* 换页`\newpage`命令
 * 插入数学符号
  Latex的数学表达式要放在\(和\)，$和$以及\begin{math}和\end{math}之间：
 
