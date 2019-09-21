@@ -13,8 +13,8 @@
 * 插入数学符号
  Latex的数学表达式要放在\(和\)，$和$以及\begin{math}和\end{math}之间：
 * 默认首行缩进\par
- * \indent  and  \noindent
-
+    * \indent  and  \noindent
+* int_{}{},frac{}{},sqrt{},大小等于geq ,leg 
 
 * [*CTeX使用*](https://blog.csdn.net/wangyang163wy/article/details/81265321)
   * .bib文件自动生成该模板下的参考文献样式。 
