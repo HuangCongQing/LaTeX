@@ -22,6 +22,7 @@
 
 
 ### Tutorials
+* Tex视频学习：https://www.bilibili.com/video/av6564090/
 
 * [LaTex开源小屋](https://www.latexstudio.net/)  
 
