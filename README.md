@@ -5,7 +5,10 @@
 
 
 
-
+* [*CTeX使用*](https://blog.csdn.net/wangyang163wy/article/details/81265321)
+  * .bib文件自动生成该模板下的参考文献样式。 
+  * .cls文件是会议提供要求排版布局。
+  * .tex文件是基于宏的流行的文本格式。后期论文的编辑就是在.tex文件中进行的。
 
 
 
