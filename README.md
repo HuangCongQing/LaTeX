@@ -15,7 +15,7 @@
 ### Tuutorials
 
 
-
+* [19LaTeX学习系列之---LaTeX的总结](https://www.jianshu.com/p/1d99b3c883a6)
 
 
 **Tips**：
@@ -34,7 +34,7 @@ http://downgit.zhoudaxiaa.com/
 中国科学院大学开题报告 LaTeX 模板 LaTeX Proposal Template for the University of Chinese Academy of Sciences
 
 
-###Q&A
+### Q&A
 ### mathtype
 * mathtype 上hat
 https://zhidao.baidu.com/question/406936260.html
