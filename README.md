@@ -21,6 +21,7 @@
 
 ### ShortCuts
 * tex 注释快捷键 `ctrl +T`
+* `ctrl+左键`单击tex文件内容： pdf文件跳转到对应的段落中高亮显示。反之，`ctrl+左键`单击pdf文件内容，tex文件跳转到对应的段落中高亮显示。
 
 ### Tutorials
 * Tex视频学习：https://www.bilibili.com/video/av6564090/
@@ -47,6 +48,29 @@ http://downgit.zhoudaxiaa.com/
 ##### [mohuangrui/*ucasproposal*](https://github.com/mohuangrui/ucasproposal)
 中国科学院大学开题报告 LaTeX 模板 LaTeX Proposal Template for the University of Chinese Academy of Sciences
 
+
+### 未分类
+
+texstudio其它技巧
+在texstudio侧边栏中添加todo标签 %todo ...todo-something...
+
+或者% 大写字母开头也是自动添加成todo标签
+
+[皮皮blog](http://blog.csdn.net/pipisorry)
+
+
+Latex小工具
+[Latex论文写作-Texsdudio 快捷键总结]
+
+Note: texstudio基本自带这些小工具
+
+[皮皮blog](http://blog.csdn.net/pipisorry)
+
+
+from: http://blog.csdn.net/pipisorry/article/details/54565608
+
+ref: [Texstudio用户手册：TeXstudio : User manual]
+[英语论文中怎么正确地写计量单位]
 
 ### Q&A
 ### mathtype
