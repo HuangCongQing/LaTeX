@@ -12,10 +12,12 @@
 
 
 
-### Tuutorials
+### Tutorials
 
 
 * [19LaTeX学习系列之---LaTeX的总结](https://www.jianshu.com/p/1d99b3c883a6)
+
+* [LaTeX新人教程，30分钟从完全陌生到基本入门](https://blog.csdn.net/perfumekristy/article/details/8515272)
 
 
 **Tips**：
