@@ -12,6 +12,8 @@
 * 换页`\newpage`命令
 * 插入数学符号
  Latex的数学表达式要放在\(和\)，$和$以及\begin{math}和\end{math}之间：
+* 默认首行缩进\par
+ * \indent  and  \noindent
 
 
 * [*CTeX使用*](https://blog.csdn.net/wangyang163wy/article/details/81265321)
