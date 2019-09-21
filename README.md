@@ -14,6 +14,7 @@
 
 ### Tutorials
 
+* [LaTex开源小屋](https://www.latexstudio.net/)  
 
 * [19LaTeX学习系列之---LaTeX的总结](https://www.jianshu.com/p/1d99b3c883a6)
 
