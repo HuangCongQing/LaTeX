@@ -19,7 +19,8 @@
   * .cls文件是会议提供要求排版布局。
   * .tex文件是基于宏的流行的文本格式。后期论文的编辑就是在.tex文件中进行的。
 
-
+### ShortCuts
+* tex 注释快捷键 `ctrl +T`
 
 ### Tutorials
 * Tex视频学习：https://www.bilibili.com/video/av6564090/
