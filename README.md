@@ -3,8 +3,8 @@
 
 概述：TEX是斯坦福大学的教授Donald E.Knuth(图灵奖获得者)开发的一个功能强大的幕后排版系统。他当时在撰写名为The Art of Computer Programming的书，由于出版商把他书中的数学式子排版得很难看，他决定推迟出版，自行研发一套排版系统进行排版。这个系统就是TEX系统。 
 
-* [Latex.ipynb	](./Latex.ipynb	) 
-* [MathType.md](MathType.md)
+* [Latex.ipynb	-https://nbviewer.jupyter.org](https://nbviewer.jupyter.org/github/HuangCongQing/Tex/blob/master/Latex.ipynb	) 
+* [MathType疑难.md](MathType.md)
 
 
 ### Start
