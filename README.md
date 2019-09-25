@@ -20,6 +20,9 @@
     * \indent  and  \noindent
 * int_{}{},frac{}{},sqrt{},大小等于geq ,leg 
 
+
+* 空格 `\quad` , `\`
+
 * [*CTeX使用*](https://blog.csdn.net/wangyang163wy/article/details/81265321)
   * .bib文件自动生成该模板下的参考文献样式。 
   * .cls文件是会议提供要求排版布局。
