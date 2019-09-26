@@ -29,6 +29,8 @@
   * .tex文件是基于宏的流行的文本格式。后期论文的编辑就是在.tex文件中进行的。
 
 * [LaTeX公式与MathType公式如何快速转换](http://www.mathtype.cn/jiqiao/zhuanhua-gongshi.html)
+*  [设置字体格式(*加粗*,斜体,下划线](http://jingyan.baidu.com/article/48206aeadf374c216bd6b36e.html)
+
 
 
 ### ShortCuts
