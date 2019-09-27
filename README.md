@@ -31,6 +31,20 @@
 * [LaTeX公式与MathType公式如何快速转换](http://www.mathtype.cn/jiqiao/zhuanhua-gongshi.html)
 *  [设置字体格式(*加粗*,斜体,下划线](http://jingyan.baidu.com/article/48206aeadf374c216bd6b36e.html)
 
+#### 插入代码
+
+* https://blog.csdn.net/u012675539/article/details/47048163
+
+```
+Latex报错: LaTex cite.sty not found
+
+```
+* https://blog.csdn.net/Jiajikang_jjk/article/details/80447969
+* https://blog.csdn.net/yq_forever/article/details/80952914
+
+python:https://blog.csdn.net/silent56_th/article/details/78312923
+
+
 
 
 ### ShortCuts
