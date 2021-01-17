@@ -13,7 +13,7 @@
 
 * 【推荐】学习视频：https://www.bilibili.com/video/BV15b411j7Au
 * 学习笔记：https://www.overleaf.com/read/tzrgxctcvmqg
-* 学习PPT资料：[LaTex 课件(耿楠)](LaTex 课件(耿楠))
+* 学习PPT资料：[LaTex 课件(耿楠)](./LaTex课件(耿楠))
 
 
 * https://www.bilibili.com/video/BV1Xs411x7s8
