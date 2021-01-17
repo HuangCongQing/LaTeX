@@ -8,16 +8,27 @@
 * [Latex.ipynb	-https://nbviewer.jupyter.org](https://nbviewer.jupyter.org/github/HuangCongQing/Tex/blob/master/Latex.ipynb	)
 * [MathType疑难.md](MathType.md)
 
-### 学习推荐
+### Tutorials
 
-* 学习视频：https://www.bilibili.com/video/BV15b411j7Au
+
+* 【推荐】学习视频：https://www.bilibili.com/video/BV15b411j7Au
 * 学习笔记：https://www.overleaf.com/read/tzrgxctcvmqg
 * 学习PPT资料：[LaTex 课件(耿楠)](LaTex 课件(耿楠))
+
+
+* https://www.bilibili.com/video/BV1Xs411x7s8
+* [LaTex开源小屋](https://www.latexstudio.net/)
+* [19LaTeX学习系列之---LaTeX的总结](https://www.jianshu.com/p/1d99b3c883a6)
+* [LaTeX新人教程，30分钟从完全陌生到基本入门](https://blog.csdn.net/perfumekristy/article/details/8515272)
+
+**Tips**：
+单个文件夹或文件下载
+http://downgit.zhoudaxiaa.com/
+将github文件夹或文件**链接**复制粘贴入DownGit中，选择download即可;
 
 ### Start
 
 * [换行`\\` 命令]([https://jingyan.baidu.com/article/49ad8bce54d9535835d8fa6e.html](https://jingyan.baidu.com/article/49ad8bce54d9535835d8fa6e.html))
-  )
 * 换页`\newpage`命令
 * 插入数学符号
   Latex的数学表达式要放在\(和\)，$和$以及\begin{math}和\end{math}之间：
@@ -53,17 +64,6 @@ python:https://blog.csdn.net/silent56_th/article/details/78312923
 * tex 注释快捷键 `ctrl +T`
 * `ctrl+左键`单击tex文件内容： pdf文件跳转到对应的段落中高亮显示。反之，`ctrl+左键`单击pdf文件内容，tex文件跳转到对应的段落中高亮显示。
 
-### Tutorials
-
-* Tex视频学习：https://www.bilibili.com/video/av6564090/
-* [LaTex开源小屋](https://www.latexstudio.net/)
-* [19LaTeX学习系列之---LaTeX的总结](https://www.jianshu.com/p/1d99b3c883a6)
-* [LaTeX新人教程，30分钟从完全陌生到基本入门](https://blog.csdn.net/perfumekristy/article/details/8515272)
-
-**Tips**：
-单个文件夹或文件下载
-http://downgit.zhoudaxiaa.com/
-将github文件夹或文件**链接**复制粘贴入DownGit中，选择download即可;
 
 ### 模板
 
