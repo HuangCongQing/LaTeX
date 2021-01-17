@@ -1,9 +1,9 @@
 # LaTeX
 
-学习记录
+LaTeX学习记录
 
 
-概述：TEX是斯坦福大学的教授Donald E.Knuth(图灵奖获得者)开发的一个功能强大的幕后排版系统。他当时在撰写名为The Art of Computer Programming的书，由于出版商把他书中的数学式子排版得很难看，他决定推迟出版，自行研发一套排版系统进行排版。这个系统就是TEX系统。
+> 概述：TEX是斯坦福大学的教授Donald E.Knuth(图灵奖获得者)开发的一个功能强大的幕后排版系统。他当时在撰写名为The Art of Computer Programming的书，由于出版商把他书中的数学式子排版得很难看，他决定推迟出版，自行研发一套排版系统进行排版。这个系统就是TEX系统。
 
 * [Latex.ipynb	-https://nbviewer.jupyter.org](https://nbviewer.jupyter.org/github/HuangCongQing/Tex/blob/master/Latex.ipynb	)
 * [MathType疑难.md](MathType.md)
@@ -14,6 +14,9 @@
 * 【推荐】学习视频：https://www.bilibili.com/video/BV15b411j7Au
 * 学习笔记：https://www.overleaf.com/read/tzrgxctcvmqg
 * 学习PPT资料：[LaTex 课件(耿楠)](./LaTex课件(耿楠))
+
+---
+
 
 
 * https://www.bilibili.com/video/BV1Xs411x7s8
