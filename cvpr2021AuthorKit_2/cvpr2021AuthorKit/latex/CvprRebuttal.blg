@@ -1,0 +1,46 @@
+This is BibTeX, Version 0.99d (TeX Live 2017/Debian)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: CvprRebuttal.aux
+The style file: ieee_fullname.bst
+Database file #1: egbib.bib
+You've used 1 entry,
+            2120 wiz_defined-function locations,
+            583 strings with 4796 characters,
+and the built_in function-call counts, 229 in all, are:
+= -- 19
+> -- 7
+< -- 0
++ -- 4
+- -- 2
+* -- 9
+:= -- 43
+add.period$ -- 3
+call.type$ -- 1
+change.case$ -- 4
+chr.to.int$ -- 0
+cite$ -- 1
+duplicate$ -- 7
+empty$ -- 23
+format.name$ -- 2
+if$ -- 46
+int.to.chr$ -- 0
+int.to.str$ -- 1
+missing$ -- 0
+newline$ -- 8
+num.names$ -- 2
+pop$ -- 9
+preamble$ -- 1
+purify$ -- 3
+quote$ -- 0
+skip$ -- 7
+stack$ -- 0
+substring$ -- 6
+swap$ -- 1
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 4
+warning$ -- 0
+while$ -- 2
+width$ -- 2
+write$ -- 12
