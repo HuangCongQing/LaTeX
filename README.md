@@ -2,7 +2,6 @@
 
 LaTeX学习记录
 
-
 > 概述：TEX是斯坦福大学的教授Donald E.Knuth(图灵奖获得者)开发的一个功能强大的幕后排版系统。他当时在撰写名为The Art of Computer Programming的书，由于出版商把他书中的数学式子排版得很难看，他决定推迟出版，自行研发一套排版系统进行排版。这个系统就是TEX系统。
 
 * [Latex.ipynb	-https://nbviewer.jupyter.org](https://nbviewer.jupyter.org/github/HuangCongQing/Tex/blob/master/Latex.ipynb	)
@@ -10,14 +9,12 @@ LaTeX学习记录
 
 ### Tutorials
 
-
 * 【推荐】学习视频：https://www.bilibili.com/video/BV15b411j7Au
-* 学习笔记：https://www.overleaf.com/read/tzrgxctcvmqg
+* 学习笔记：https://www.yuque.com/docs/share/4fba6b11-dde9-4a6a-806b-e9e06657b1ae
+* 学习latex在线代码：https://www.overleaf.com/read/tzrgxctcvmqg
 * 学习PPT资料：[LaTex 课件(耿楠)](./LaTex课件(耿楠))
 
 ---
-
-
 
 * https://www.bilibili.com/video/BV1Xs411x7s8
 * [LaTex开源小屋](https://www.latexstudio.net/)
@@ -67,10 +64,7 @@ python:https://blog.csdn.net/silent56_th/article/details/78312923
 * tex 注释快捷键 `ctrl +T`
 * `ctrl+左键`单击tex文件内容： pdf文件跳转到对应的段落中高亮显示。反之，`ctrl+左键`单击pdf文件内容，tex文件跳转到对应的段落中高亮显示。
 
-
 ### 模板
-
-
 
 https://github.com/HuangCongQing/GZHU-Report-Latex-Version
 
