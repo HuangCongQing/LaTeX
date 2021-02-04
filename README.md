@@ -66,6 +66,10 @@ python:https://blog.csdn.net/silent56_th/article/details/78312923
 
 ### 模板
 
+* [JAS自动化学报模板](cvpr2021AuthorKit_2)
+* [CVPR](JAS-Template)
+
+
 https://github.com/HuangCongQing/GZHU-Report-Latex-Version
 
 ##### [mohuangrui/*ucasthesis*](https://github.com/mohuangrui/ucasthesis)
