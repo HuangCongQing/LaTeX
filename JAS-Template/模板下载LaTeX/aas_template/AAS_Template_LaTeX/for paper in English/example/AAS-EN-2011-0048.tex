@@ -1,0 +1,947 @@
+\documentclass{aase}
+\usepackage{multicol}
+\usepackage{psfig}
+\usepackage{subfigure}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{ccaption}
+\usepackage{booktabs} % 做三线表的上下两条粗线用
+
+\setcounter{page}{1100}
+
+\firstheadname{ACTA AUTOMATICA SINICA} % 首页页眉
+\firstfootname{} % 首页页脚 \zihao{5-}$\copyright$ 200X by {\sl Acta Automatica Sinica}. All rights reserved.
+\headevenname{ACTA AUTOMATICA SINICA} % 其他页偶数页页眉
+ \headoddname{ MUKHIJA Pankaj  et al.: Delay-distribution-dependent Robust Stability
+ Analysis of $\cdots$}% 其他页奇数页页眉
+\begin{document}
+
+\title{{
+Delay-distribution-dependent Robust Stability\\\vskip0.3
+\baselineskip
+ Analysis of Uncertain Lurie Systems with \\\vskip0.2 \baselineskip
+Time-varying Delay }
+\thanks{
+Manuscript received April 4, 2011; accepted June 22, 2011 }
+\thanks{Recommended by Associate Editor GENG Zhi-Yong}
+\thanks{
+1. Department of Electrical Engineering, Indian Institute of
+Technology Delhi, New Delhi 110016, India } }
+
+\author{{
+ MUKHIJA Pankaj$^{1}$ \qquad KAR Indra Narayan$^{1}$ \qquad BHATT Rajendra Kumar Purushottam$^{1}$ }}
+
+\abstract{In this paper, the problem of robust absolute stability of
+Lurie system with probabilistic time-varying delay and norm-bounded
+parametric uncertainty is considered. The time delay variation range
+is divided into two sub-intervals. By considering the probability
+distribution of the time-varying delay between
+ the two sub-intervals and the knowledge of
+the delay variation range, a novel linear matrix inequalities (LMIs) based
+stability condition is derived by defining a
+Lyapunov Krasovskii functional.  It is illustrated with the help of numerical
+examples that the derived stability criteria
+can lead to less conservative results as compared to the  results obtained by
+ the traditional method of using the delay
+variation range information only.}
+
+\keyword{Lurie system, time-delay, probability distribution, linear
+matrix inequality (LMI)} \doi{10.3724/SP.J.1004.2012.01100}
+
+\cit{Mukhija Pankaj, Kar Indra Narayan, Bhatt Rajendra Kumar
+Purushottam. Delay-distribution-dependent robust stability analysis
+of uncertain Lurie systems with time-varying delay. {\sl Acta
+Automatica Sinica}, 2012, {\bf 38}(7): 1100$-$1106}
+
+\maketitle
+
+\pagestyle{aasheadings}
+
+%这一章为引言,无需写标题. We do not need a title for the introduction chapter.
+
+The problem of absolute stability of Lurie system has been widely
+studied by many researchers due to its theoretical as well as
+practical significance$^{[1-3]}$. Most of the physical systems
+possess time delay. Hence, the problem of absolute stability of time
+delay Lurie control system has been the topic of considerable
+research$^{[4-16]}$. It is known that the delay-dependent stability
+conditions are generally less conservative than delay-independent
+stability conditions$^{[4-5]}$, especially when the size of delay is
+small. Therefore, more efforts have been made to derive the
+delay-dependent stability conditions for the absolute stability of
+Lurie system$^{[6-16]}$. In [6], model transformation along with
+Moon$'$s inequality was used for deriving the absolute stability
+condition. In [7], a new stability condition was proposed using
+Jensen$'$s inequality. Neither model transformation nor bounding
+technique for cross terms was used therein. A less conservative
+stability criteria was devised in [8] by employing free-weighting
+matrices to express the relationship between the terms in
+Leibniz-Newton formula. However, [11] used a
+ discretized Lyapunov functional
+approach to deal with the problem of absolute stability for a class
+of nonlinear neutral systems.
+ Further, [12] presents
+a new absolute stability criteria by using a Lur$'$e-Postnikov
+function as the Lyapunov-like function. Nevertheless, in all these
+results, the time delay was assumed to be \linebreak constant.
+
+In the recent years, some results have been reported for the
+absolute stability of Lurie system with time varying
+delay$^{[13-16]}$.  The results derived in [13] by using integral
+inequality approach were further improved in [14] by including all
+the useful terms in the derivative of the Lyapunov-Krasovskii
+functional. In [15], the problem of robust absolute stability was
+studied by defining a Lyapunov functional which divided the delay
+interval into two subintervals. The delay interval was divided into
+multiple segments and a different Lyapunov matrix was defined for
+each segment in [16] to reduce the conservatism in the stability
+analysis of neutral Lurie system. However, it may be noted that in
+all the above results, only the information about the delay
+variation range was considered to derive the stability conditions.
+In some applications, for instance networked control systems, the
+probability of delay taking a large value is small. In such cases,
+the knowledge of delay distribution is an important parameter to
+describe the network system condition.  As shown in [17], this
+additional information in the form of probability distribution of
+delay along with the knowledge of delay variation range can be
+utilized for the stability analysis to give less conservative
+\linebreak results.
+
+In this paper, we are concerned with stability analysis of Lurie
+system by utilizing the information about both the delay variation
+range and the delay distribution probability. To the best of our
+knowledge, the problem of stability analysis of Lurie system by
+considering the information of the probability distribution of time
+varying delay has not been considered so far. In this paper, by
+utilizing the information of probability distribution of the
+stochastic time delay, a mean square stability (MSS) criteria is
+derived in terms of LMIs for the time-delayed Lurie system, which
+depends on both delay variation range and the delay distribution
+information.  Physical systems usually suffer from uncertainties
+that arise due to unmodeled dynamics and variation in system
+parameters. These parametric uncertainties may also result in
+instability of the system. Therefore, to analyze the effect of these
+uncertainties on the stability analysis, we extend the derived
+condition to the above systems with norm-bounded parametric
+uncertainties.
+
+The rest of this paper is organized as follows. Section 1 describes
+the problem statement. In Section 2, a delay dependent criteria for
+the stability of time-delayed Lurie system is derived in terms of
+LMIs. The derived condition is extended to the above system with
+norm bounded parametric uncertainties. Further, we prove that the
+result presented in Theorem 1 of [18], for the absolute stability of
+Lurie system, is a special case of our results. The effectiveness of
+the proposed approach is illustrated in Section 3 with the help of
+numerical examples. Finally, Section 4 gives the concluding remarks.
+
+{\bf Notations.} The following notations are used throughout the
+paper. The superscript ``T''
+ denotes the transpose of a matrix.
+${\bf R}^n$ and ${\bf R}^{n\times m}$ stand for the set of real
+vectors with dimension $n$ and real matrix of size $n \times m$,
+respectively. $P>0$ denotes a symmetric positive definite matrix.
+$I$ and $0$ mean the identity matrix and zero matrix, respectively
+with compatible dimensions.  In a symmetric matrix, the symbol
+``$*$'' is used to denote the term that is induced by symmetry.
+Wherever the dimensions of the matrices are not mentioned, they are
+assumed to be of compatible dimensions. ${\rm E}\{\cdot\}$ denotes
+the mathematical expectation.
+
+
+\section{Problem statement}
+Consider the following Lurie system:
+\begin{align}
+\dot{x}(t) &= {A}x(t)+{B}x(t-h(t))+{D}\omega (t) \nonumber \\
+z(t) &= Mx(t)+Nx(t-h(t))  \label{eqn:lb} \\
+\omega (t)&= -\varphi (t,z(t)) \nonumber \\
+x(t)&= \psi(t),~~t\in\left[-h_m, \, 0 \right] \nonumber
+\end{align}
+where $x(t)\in {\bf R}^{n}$, $\omega(t)\in {\bf R}^{m}$, and
+$z(t)\in {\bf R}^{m}$ are the state vector, input vector, and output
+vector of the system, respectively. $A$, $B$, $D$, $M$, and $N$ are
+real constant matrices with appropriate dimensions.
+$\varphi(t,z(t))$ is a class of memoryless, time-varying, nonlinear
+vector-valued functions that are piecewise continuous in $t$ and
+globally Lipschitz in $z(t)$. $\varphi(t,0)$ $=$ $0$ and satisfies
+the following
+ sector condition for $\forall\, t$ $\geq$ $0$,
+$\forall \,z(t) \in {\bf R}^{m}$:
+\begin{equation}
+\varphi^{\rm T}(t,z(t))[\varphi(t,z(t)-Kz(t)]\leq 0 \label{eqn:p2}
+\end{equation}
+\begin{equation}
+[\varphi(t,z(t))-K_{1}z(t)]^{\rm T}[\varphi(t,z(t)-K_{2}z(t)]\leq 0
+\label{eqn:p3}
+\end{equation}
+where $K_{1}$  and $K_{2}$ are constant real matrices of appropriate
+dimensions and $K =K_{2}-K_{1}$ is a symmetric positive definite
+matrix. The nonlinear function $\varphi(t,z(t))$ satisfying (2) is
+said to belong to the sector $[0,K]$,  whereas when $\varphi
+(t,z(t))$ satisfies (3), it is said to belong to the sector
+$[K_{1},K_{2}]$. The time varying delay satisfies the following:
+\begin{equation}
+0\leq h(t)\leq h_m <\infty, ~~ \forall\, t \geq 0 \label{eqn:p4}
+\end{equation}
+
+The initial condition, $\psi(t)$, is a differentiable vector-valued
+function of $t\in [-h_{m},0]$.
+
+The information of the probabilistic distribution of the
+time-varying delay is incorporated in (1) by defining a Bernoulli
+distributed random variable $\rho (t)$ with the expectation $\rho_0$
+$(0\leq \rho_0\leq 1)$ as follows:
+\begin{equation}
+\rho (t)=\left\{\begin{array}{ll} {1, \, \, \, \, \, \, \, \, \, \, \, \, h(t)\in \left[0,\, h_{0} \right]} \\
+{0,\, \, \, \, \, \, \, \, \, \, \, \,h(t)\in \left(h_{0},\, h_{m}
+\right]} \end{array}\right. \label{eqn:p5}
+\end{equation}
+where $h_0\in[0,h_m]$ is a constant.
+
+ From (5) we get
+Prob$\{\rho(t)=1\}={\rm E}(\rho(t))=\rho_0$ and
+Prob$\{\rho(t)=0\}=1-{\rm E}({\rho(t)})=1-\rho_0$.
+
+By using (5), system (1) can be re-expressed as follows:
+\begin{align}
+ \dot{x}(t)=&\ Ax(t)+\rho (t)Bx(t-h_{1} (t))\; +\nonumber\\
+&\ (1-\rho (t))Bx(t-h_{2} (t))+D\omega (t) \nonumber\\
+z(t)=&\ Mx(t)+\rho (t)Nx(t-h_{1} (t))\;+ \nonumber\\
+&\ (1-\rho (t))Nx(t-h_{2} (t)) \nonumber\\
+ x(t)=&\ \psi (t)\, ,\, \, \, \, \, \, \, \, \, \, \, \, t\in
+\left[-h_{m},\ 0\right]  \label{eqn:p6}
+\end{align}
+where $h_1\in[0,h_0]$  and $h_2\in[h_0,h_m]$  are defined as
+\begin{align}
+h_{1} (t)&=\left\{\begin{array}{ll} {h(t),\, \, \,\, ~~\, \, h(t)\in \left[0\, ,\, h_{0} \right]} \\
+{h_{0}, \, \, \, \, \, \, \, \, ~~\, \, h(t)\in \left(h_{0} \, ,\, h_{m} \right]} \end{array}\right.  \\
+h_{2} (t)&=\left\{\begin{array}{l} {h_{0},\, \, \, ~~~~~\,  h(t)\in \left[0\, ,\, h_{0} \right]} \\
+{h(t), \, \, \, \, \, \, \, \, \, \,  h(t)\in \left(h_{0} \, ,\,
+h_{m} \right]} \end{array}\right.
+\end{align}
+
+{\bf Remark 1.} The random variable $\rho(t)$ describes the
+distribution information
+ of the delay. It is clear from the
+definition of $\rho(t)$ that ${\rm E}({\rho(t)-\rho_0})=0$, ${\rm
+E}({\rho^2 (t)})=\rho_{0}$ and
+ ${\rm E}(\rho(t)$ $-$ $\rho_0)^2$ $=$ $\rho_0(1-\rho_0)$.
+
+{\bf Remark 2.} It can be observed that the system representations
+(1) and (6) are equivalent. Therefore, the stability of (1) can be
+deduced from the stability analysis of (6).
+
+ Further,
+the stability analysis for system (1) is extended to the uncertain
+systems represented by
+\begin{align}
+ \dot{x}(t)=&\ \bar{A}x(t)+\bar{B}x(t-h(t))+\bar{D}\omega (t)\nonumber \\
+z(t)=&\ Mx(t)+Nx(t-h(t))  \label{eqn:p9}
+\end{align}
+where $\bar{A}=A+\Delta{A}$, $\bar{B}=B+\Delta{B}$ and $\bar{D}=D+\Delta{D}$. $\Delta{A}$, $\Delta{B}$ and $\Delta{D}$
+are real valued matrix functions representing parameter uncertainties, which are assumed to have the following form:
+\begin{equation}
+[\Delta{A}~~\Delta{B}~~\Delta{D}]=HF(t)[E_a~~E_b~~E_d]
+\label{eqn:p10}
+\end{equation}
+where $H$, $E_{a}$, $E_{b}$ and $E_{d}$ are known constant matrices of appropriate dimensions, and $F(t)$
+is an unknown real and possibly time-varying matrix with Lebesgue-measurable elements satisfying:
+\begin{equation}
+F^{\rm T}F(t) \leq I \label{eqn:p11}
+\end{equation}
+
+By using (5), the uncertain Lurie system (9) can be rewritten as
+\begin{align}
+ \dot{x}(t)=&\ \bar{A}x(t)+\rho (t)\bar{B}x(t-h_{1} (t))\;+ \nonumber\\
+&\ (1-\rho (t))\bar{B}x(t-h_{2} (t))+\bar{D}\omega (t)\nonumber \\
+z(t)=&\ Mx(t)+\rho (t)Nx(t-h_{1} (t))\;+\nonumber \\
+&\ (1-\rho (t))Nx(t-h_{2}(t)) \label{eqn:p12}
+\end{align}
+
+The following definitions and lemmas will be used to derive the main results of this paper.
+
+\textbf{Definition 1$^{[19]}$.} Denote $x_t (s)=x(t+s)$, ${-h_m}\leq
+s\leq 0$. For a given function $V(x_t)$, its infinitesimal operator
+$L$ is defined as
+\begin{equation}
+LV(x_t)=\lim_{\Delta \to 0^{+}}\frac{1}{\Delta}[{\rm
+E}(V(x_{t+\Delta})|x_t)-V(x_t)] \label{eqn:p13}
+\end{equation}
+
+\textbf{Definition 2$^{[20]}$.} System (6) is said to be mean square
+stable if for any $\epsilon>0$ there is a $\delta(\epsilon)$ such
+that
+\begin{equation}
+{\rm E}{{\parallel{x(t)}\parallel}}^2<\epsilon , ~\forall \,t>0
+\nonumber
+\end{equation}
+when
+\begin{equation}
+\sup_{-h_m\leq s\leq 0}{\rm
+E}{\parallel\psi(s)\parallel}^2<\delta(\epsilon) \nonumber
+\end{equation}
+
+\textbf{Lemma 1 (Schur complement lemma$^{[21]}$).} Given constant
+matrices $\Omega_{1}$, $\Omega_{2}$ and $\Omega_{3}$ of appropriate
+dimensions, with $\Omega_{1}$ and $\Omega_{2}$ symmetric, then
+$\Omega_{1}-\Omega_{3}\Omega^{-1}_{2}\Omega^{\rm T}_{3}>0$ and
+$\Omega_{2}$ $>$ $0$ if and only if
+\[\left[\begin{array}{ccc} {\Omega_{1}} & {\Omega_{3}} \\{\Omega_{3}^{\rm T}} & {\Omega_{2}} \end{array}\right]>0\]
+
+\textbf{Lemma 2$^{[22]}$.}  Given matrices $\Sigma$, $\Xi$, and
+$\Omega$ with $\Omega=\Omega^{\rm T}$, then
+\begin{equation}
+\Omega+{\Sigma}F(\sigma){\Xi} + {\Xi^{\rm T}}F^{\rm
+T}(\sigma)\Sigma^{\rm T}<0 \nonumber
+\end{equation}
+holds for any $F(\sigma)$ satisfying $F^{\rm T}(\sigma)F(\sigma)
+\leq I$ if and only if there exists a scalar $\varepsilon_{s}$ such
+that
+\begin{equation}
+\Omega+\varepsilon^{-1}_{s}\Sigma\Sigma^{\rm T}+
+\varepsilon_{s}\Xi^{\rm T}\Xi<0 \label{eqn:p14}
+\end{equation}
+
+\section{Main results}
+
+In this section, we will first derive stability criteria for the
+Lurie time delay system represented by (6). The derived result will
+be extended to robust stability analysis of the uncertain system
+represented by (9). Further, it will be shown that the result
+presented in  Theorem 1 of [18] is a special case of our result.
+
+\textbf{Theorem 1\bf.} For given scalars $h_m\;(>0)$ and $\rho_0$
+$(0$ $\leq$ $\rho_0$ $\leq$ $1)$, the Lurie system represented by
+(6), with the nonlinear function $\varphi (t,z(t))$ satisfying (9),
+is absolutely stable in the mean square sense if there exist
+matrices $P>0$, $Q_i$ $>$ $0$, $Z_i>0$ $(i=1,2)$, $S$, $T$, $W$, $U$
+of appropriate dimensions and a scalar $\varepsilon>0$ such that the
+following LMIs hold:
+\begin{equation}
+\Omega \left(l\right) = \left[\begin{array}{cccccc} {\Xi _{11} } & {\Sigma _{l} } & {\Xi _{13} } & {\Xi _{14} } & {\Xi _{15} }
+& {\Xi _{16} } \\ {*} & {\Upsilon _{l} } & {0} & {0} & {0} & {0} \\ {*} & {*} & {-Z_{1} } & {0} & {0} & {0} \\
+{*} & {*} & {*} & {-Z_{1} } & {0} & {0} \\ {*} & {*} & {*} & {*} & {-Z_{2} } & {0} \\
+{*} & {*} & {*} & {*} & {*} & {-Z_{2} } \end{array}\right] <0
+\label{eqn:p15}
+\end{equation}
+where
+\begin{equation}
+l=1, 2, 3, 4  \nonumber
+\end{equation}
+\begin{align}
+\Xi _{11} &= \left[\begin{array}{cccccc} {\Pi _{11} } & {\Pi _{12} } & {0} & {\Pi _{14} } & {0} & {\Pi _{16} } \nonumber \\
+{*} & {0} & {0} & {0} & {0} & {\Pi _{26} } \\ {*} & {*} & {-Q_{1} } & {0} & {0} & {0} \nonumber \\
+{*} & {*} & {*} & {0} & {0} & {\Pi _{46} } \\ {*} & {*} & {*} & {*} & {-Q_{2} } & {0} \nonumber \\
+{*} & {*} & {*} & {*} & {*} & {\Pi _{66} } \end{array}\right] + \Gamma +\Gamma ^{\rm T} \nonumber \\ \nonumber \\
+\Gamma  &= [S~~-S+T~~-T+U~~-U+W~~-W~~0] \nonumber
+\end{align}
+\begin{align*}
+\Pi_{11} & = A^{\rm T}P+PA+Q_{1}+Q_{2},~ \Pi_{12} =  \rho_{0}PB  \nonumber \\
+\Pi_{14} & = (1-\rho_{0})PB,~\Pi_{16}=PD-{\varepsilon}M^{\rm T}K^{\rm T}  \nonumber \\
+%\end{align}
+%\begin{align*}
+\Pi_{26} & ={\varepsilon}\rho_{0}N^{\rm T}K^{\rm T},~\Pi_{46} ={\varepsilon}(1-\rho_{0})N^{\rm T}K^{\rm T} \nonumber \\
+\Pi_{66} & = -2{\varepsilon}I \nonumber
+\end{align*}
+\begin{align*}
+\Xi _{13} & = \Big[{\sqrt{\rho _{0}h_{0} } Z_{1} A}~~{\sqrt{\rho _{0}h_{0} } Z_{1} B}~~0~~0 \nonumber \\
+& \hspace{6 mm}0~~{\sqrt{\rho _{0}h_{0} }Z_{1} D}\Big]^{\rm T} \nonumber \\
+\Xi _{14} & = \Big[{\sqrt{(1-\rho _{0} )h_{0} } Z_{1} A}~~0~~0~~{\sqrt{(1-\rho _{0} )h_{0} } Z_{1} B} \nonumber \\
+& \hspace{6 mm} 0~~{\sqrt{(1-\rho _{0} )h_{0} } Z_{1} D}\Big]^{\rm T} \nonumber \\
+%\end{align*}
+%\begin{align*}
+\Xi _{15} & = \Big[{\sqrt{\rho _{0}h_{0m} } Z_{2} A}~~{\sqrt{\rho _{0}h_{0m} } Z_{2} B}~~0~~0~~0 \nonumber \\
+& \hspace{6 mm}{\sqrt{\rho _{0}h_{0m} }Z_{2} D}\Big]^{\rm T} \nonumber \\
+\Xi _{16} & = \Big[{\sqrt{(1-\rho _{0} )h_{0m} } Z_{2} A}~~0~~0~~{\sqrt{(1-\rho _{0} )h_{0m} } Z_{2} B} \nonumber \\
+& \hspace{6 mm} 0~~{\sqrt{(1-\rho _{0} )h_{0m} } Z_{2} D}\Big]^{\rm
+T} \nonumber
+\end{align*}
+\begin{align*}
+\Sigma_{1} & =  -2h_{0}S~\Sigma_{2} = -2h_{0}T~\Sigma_{3} = -2h_{0}U,~ \Sigma_{4} = -2h_{0}W \nonumber \\
+\Upsilon_{1} & = \Upsilon_{2}=-2h_{0}Z_{1},~\Upsilon_{3} = \Upsilon_{4}=-2h_{0m}Z_{2} \nonumber \\
+\hspace{3 mm}h_{0m} & =h_m-h_0 \nonumber
+\end{align*}
+
+\textbf{Proof}{\bf.} Choose the Lyapunov functional candidate as
+\begin{equation}
+V(x_t) ={\sum_{i=1}^3}V_{i}(x_t)
+\label{eqn:p16}
+\end{equation}
+where
+\begin{align*}
+V_1(x_t)&=x^{\rm T}(t)Px(t)  \nonumber \\
+V_{2}(x_{t})&=\int _{t-h_{0} }^{t}x^{\rm T} (s)Q_{1} x(s){\rm d}s
++\int _{t-h_{m} }^{t}x^{\rm T} (s)Q_{2} x(s){\rm d}s \nonumber
+\end{align*}\begin{align*}
+V_{3}(x_{t})=&\ \int _{t-h_{0} }^{t}\int _{s}^{t}\dot{x}^{\rm T} (v)Z_{1}   \dot{x}(v){\rm d}v{\rm d}s\; + \nonumber \\
+&\ \int _{t-h_{m} }^{t-h_{0} }\int _{s}^{t}\dot{x}^{\rm T} (v)Z_{2}
+\dot{x}(v){\rm d}v{\rm d}s \nonumber
+\end{align*}
+
+Using the infinitesimal operator (\ref{eqn:p13}) for $V(x_t)$ and
+taking the expectation on it, we can obtain
+\begin{align}
+{\rm E}\{LV_1(x_t)\} =&\ {\rm E}\{2x^{\rm T}(t)P(Ax(t)+{\rho_0}Bx(t-h_1(t))\;+  \nonumber\\
+&\ (1-\rho_0)Bx(t-h_2(t))+D\omega(t))\} \\
+{\rm E}\{LV_2(x_t)\} =&\ {\rm E}\{x^{\rm T}(t)(Q_{1}+Q_{2})x(t) \;- \nonumber\\
+&\ x^{\rm T}(t-h_0)Q_1x(t-h_0)\;-  \nonumber \\
+&\ x^{\rm T}(t-h_m)Q_1x(t-h_m)\} \\
+{\rm E}\{LV_3(x_t)\} =&\  {\rm E}\Big\{\dot{x}^{\rm T}(t)Z_{12}\dot{x}(t)\; - \nonumber\\
+&\ \int_{t-h_0}^{t}\dot{x}^{\rm T}(s)Z_1\dot{x}(s){\rm d}s \;- \nonumber \\
+&\ \int_{t-h_m}^{t-h_0}\dot{x}^{\rm T}(s)Z_2\dot{x}(s){\rm d}s
+\Big\}
+\end{align}
+where  $Z_{12}=h_0Z_1+(h_m-h_0)Z_2$.
+
+From (6), we get
+\begin{align}
+{\rm E}\Big(\dot{x}^{\rm T}(t)&Z_{12}\dot{x}(t)\Big) =x^{\rm T}(t)A^{\rm T}Z_{12}Ax(t)\; +\nonumber\\
+&\ \rho_{0}x^{\rm T}(t)A^{\rm T}Z_{12}Bx(t-h_{1}(t))\;+ \nonumber \\
+&\ (1-\rho_{0})x^{\rm T}(t)A^{\rm T}Z_{12}Bx(t-h_{2}(t))\;+ \nonumber \\
+&\ x^{\rm T}(t)A^{\rm T}Z_{12}D\omega(t)\;+ \nonumber \\
+&\ \rho_{0}x^{\rm T}(t-h_{1}(t))B^{\rm T}Z_{12}Bx(t-h_{1}(t))\; +\nonumber \\
+&\ \rho_{0}x^{\rm T}(t-h_{1}(t))B^{\rm T}Z_{12}D\omega(t) \;+\nonumber \\
+&\ (1-\rho_{0})x^{\rm T}(t-h_2(t)) \;\times \nonumber \\
+&\ {B^{\rm T}Z_{12}Bx(t-h_{2}(t))} \;+\nonumber \\
+&\ (1-\rho_{0})x^{\rm T}(t-h_2(t))B^{\rm T}Z_{12}D\omega(t)\;+ \nonumber \\
+&\ \omega^{\rm T}(t)D^{\rm T}Z_{12}D\omega(t) \label{eqn:p20}
+\end{align}
+
+Further, the following holds:
+\begin{align}
+&2\zeta ^{\rm T} (t)S\left[x(t)-x(t-h_{1} (t))-\int _{t-h_{1} (t) }^{t}\dot{x}(s){\rm d}s \right]=0 \nonumber \\
+&2\zeta ^{\rm T} (t)T\left[x(t-h_{1} (t))-x(t-h_{0} )-\int _{t-h_{0} }^{t-h_{1} (t)}\dot{x}(s){\rm d}s \right]=0 \nonumber \\
+&2\zeta ^{\rm T} (t)U\left[x(t-h_{0} )-x(t-h_{2} (t))-\int _{t-h_{2} (t)}^{t-h_{0} }\dot{x}(s){\rm d}s \right]=0 \nonumber\\
+&2\zeta ^{\rm T} (t)W\left[x(t-h_{2} (t))-x(t-h_{m} )-\int _{t-h_{m} }^{t-h_{2} (t)}\dot{x}(s){\rm d}s \right]=0 \nonumber\\
+\label{eqn:p21}
+\end{align}
+where
+\begin{align*}
+\zeta^{\rm T}(t)=&\ [x^{\rm T}(t)~~ x^{\rm T}(t-h_1(t))~~ x^{\rm T}(t-h_0)~~x^{\rm T}(t-h_2(t)) \nonumber \\
+&\ x^{\rm T}(t-h_m)~~\omega^{\rm T}(t)] \nonumber
+\end{align*}
+
+It follows from (1), (2) and (6) that
+\begin{align*}
+&{\rm E}\{\omega^{\rm T}(t)\omega(t)+x^{\rm T}(t)M^{\rm T}K^{\rm T}\omega(t) \;+\nonumber \\
+&\qquad \rho(t)x^{\rm T}(t-h_1(t))N^{\rm T}K^{\rm T}\omega(t)
+\;+\nonumber \end{align*}\begin{align*} &\qquad (1-\rho(t))x^{\rm
+T}(t-h_2(t))N^{\rm T}K^{\rm T}\omega(t)\} \leq 0 \nonumber
+\end{align*}
+which results in the following:
+\begin{align}
+&\omega^{\rm T}(t)\omega(t)+x^{\rm T}(t)M^{\rm T}K{T}\omega(t)\;+\nonumber\\
+&\qquad {\rho_0}x^{\rm T}(t-h_1(t))N^{\rm T}K^{\rm T}\omega(t) \;+\nonumber \\
+&\qquad (1-\rho_0)x^{\rm T}(t-h_2(t))N^{\rm T}K^{\rm T}\omega(t)
+\leq 0 \label{eqn:p22}
+\end{align}
+From (16)\,$\sim$\,(22), on applying S-procedure$^{[21]}$, we obtain
+\begin{align}
+&{{\rm E}\left\{LV(x_{t} )\right\}=}\nonumber \\
+& \qquad {{\rm E}\left\{\zeta ^{\rm T}
+ (t)\tilde{\Xi }_{11} \zeta (t)\right.}- \nonumber \\
+&{\qquad 2\zeta ^{\rm T} (t)S\, \int _{t-h_{1}
+(t)}^{t}\dot{x}(s){\rm d}s
+-2\zeta ^{\rm T} (t)T\int _{t-h_{0} }^{t-h_{1} (t)}\dot{x}(s){\rm d}s  }\,-\nonumber  \\
+&\qquad {2\zeta ^{\rm T} (t)U\int _{t-h_{2} (t)}^{t-h_{0}
+}\dot{x}(s){\rm d}s
+-2\zeta ^{\rm T} (t)W\int _{t-h_{m} }^{t-h_{2} (t)}\dot{x}(s){\rm d}s \, -} \nonumber \\
+&\qquad{\left. \int _{t-h_{0} }^{t}\dot{x}^{\rm T} (s) Z_{1}
+\dot{x}(s){\rm d}s -\int _{t-h_{m} }^{t-h_{0} }\dot{x}^{\rm T} (s)
+Z_{2} \dot{x}(s){\rm d}s\right\}} \ \label{eqn:p23}
+\end{align}
+where
+\begin{equation}
+\tilde{\Xi }_{11} =\left[\begin{array}{cccccc} {\tilde{\Pi }_{11} } & {\tilde{\Pi }_{12} }
+& {0} & {\tilde{\Pi }_{14} } & {0} & {\tilde{\Pi }_{16} } \\ {*}
+& {\tilde{\Pi }_{22} } & {0} & {0} & {0} & {\tilde{\Pi }_{26} } \\
+{*} & {*} & {-Q_{1} } & {0} & {0} & {0} \\ {*} & {*} & {*} & {\tilde{\Pi }_{44} }
+& {0} & {\tilde{\Pi }_{46} } \\ {*} & {*} & {*} & {*} & {-Q_{2} } & {0} \\
+{*} & {*} & {*} & {*} & {*} & {\tilde{\Pi }_{66} }
+\end{array}\right]+\Gamma +\Gamma ^{\rm T} \nonumber
+\end{equation}
+\begin{align*}
+\tilde{\Pi}_{11} &= A^{\rm T}P+PA+Q_{1}+Q_{2}+A^{\rm T}Z_{12}A \nonumber \\
+\tilde{\Pi}_{12} &=\rho_{0}PB+\rho_{0}A^{\rm T}Z_{12}B ,~ \tilde{\Pi}_{22}=\rho_{0}B^{\rm T}Z_{12}B \nonumber \\
+\tilde{\Pi}_{14} &=(1-\rho_{0})PB+(1-\rho_{0})A^{\rm T}Z_{12}B  \nonumber \\
+\tilde{\Pi}_{16} &=PD+A^{\rm T}Z_{12}D-{\varepsilon}M^{\rm T}K^{\rm T} \nonumber \\
+\tilde{\Pi}_{26} &={\rho_0}B^{\rm T}Z_{12}D-{\rho_0}{\varepsilon}N^{\rm T}K^{\rm T}  \nonumber \\
+\tilde{\Pi}_{44} &=(1-\rho_0)B^{\rm T}Z_{12}B, ~~ \tilde{\Pi}_{66} =D^{\rm T}Z_{12}D-2{\varepsilon}I \nonumber \\
+\tilde{\Pi}_{46} &=(1-\rho_0)B^{\rm
+T}Z_{12}D-{\varepsilon}(1-\rho_0)N^{\rm T}K^{\rm T} \nonumber
+\end{align*}
+$\varepsilon$ is a positive scalar and $\Gamma$ is being defined in
+(15). Now, (23) can be written as
+\begin{align}
+& {{\rm E}\left\{LV(x_{t} )\right\}=} \nonumber \\
+&\qquad {{\rm E}\left\{\frac{1}{2h_{0} } \right. \left(\int
+_{t-h_{1} (t)}^{t}\tilde{\zeta }^{\rm T} (t,s)
+\tilde{\Omega }_{1}  \tilde{\zeta }(t,s){\rm d}s\right. } + \nonumber\\
+&{\qquad \left. \int _{t-h_{0} }^{t-h_{1} (t)}
+\tilde{\zeta }^{\rm T} (t,s)\tilde{\Omega }_{2}  \tilde{\zeta }(t,s){\rm d}s\right)}\,+ \nonumber \\
+&{\qquad \frac{1}{2(h_{m} -h_{0} )} \left(\int _{t-h_{2}
+(t)}^{t-h_{0} }
+\tilde{\zeta }^{\rm T} (t,s)\tilde{\Omega }_{3}  \tilde{\zeta }(t,s){\rm d}s\right. } + \nonumber\\
+&{\, \left.\, \, \, \, \, \, \, \left. \int _{t-h_{m} }^{t-h_{2}
+(t)} \tilde{\zeta }^{\rm T} (t,s)\tilde{\Omega }_{4} \tilde{\zeta
+}(t,s){\rm d}s\right)\right\}} \ \label{eqn:p24}
+\end{align}
+where
+\begin{align*}
+\tilde{\zeta}^{\rm T}(t)=&\ [x^{\rm T}(t)~~ x^{\rm T}(t-h_1(t))~~ x^{\rm T}(t-h_0)~~x^{\rm T}(t-h_2(t)) \nonumber \\
+&\ x^{\rm T}(t-h_m)~~\omega^{\rm T}(t)~~\dot{x}^{\rm T}(s)]
+\nonumber
+\end{align*}
+\begin{equation}
+\tilde{\Omega }_{1} =\left[\begin{array}{cccccc} {\tilde{\Xi }_{11} }
+& -2h_{0}S \\ {*} & -2h_{0}Z_1 \end{array}\right],~~
+\tilde{\Omega }_{2} =\left[\begin{array}{cccccc}
+{\tilde{\Xi }_{11} } & -2h_{0}T \\
+{*} & -2h_{0}Z_1 \end{array}\right] \nonumber
+\end{equation}
+\begin{equation}
+\tilde{\Omega }_{3} =\left[\begin{array}{cccccc} {\tilde{\Xi }_{11} } & -2h_{0m}U \\
+{*} & -2h_{0}Z_2 \end{array}\right],~~
+\tilde{\Omega }_{4} =\left[\begin{array}{cccccc} {\tilde{\Xi }_{11} } & -2h_{0}W \\
+{*} & -2h_{0}Z_2 \end{array}\right]
+\label{eqn:p25}
+\end{equation}
+It can be observed from (24) and (25) that ${\rm E}\{LV(x_t)\}$
+holds true when the following is satisfied:
+\begin{equation}
+\tilde{\Omega }_{1}<0,~~ \tilde{\Omega }_{2}<0, ~~\tilde{\Omega }_{3}<0,~~ \tilde{\Omega }_{4}<0 \nonumber
+\end{equation}
+
+By applying Lemma 1, it can be easily shown that the inequalities
+$\tilde{\Omega }_{1}<0$, $\tilde{\Omega }_{2}<0$, $\tilde{\Omega
+}_{3}<0$, $\tilde{\Omega }_{4}<0$ are equivalent to inequalities
+${\Omega}(1)<0$, ${\Omega}(2)<0$, ${\Omega }(3)<0$, ${\Omega
+}(4)<0$, respectively in (15). This completes the proof.
+ \hfill    $\square$
+
+\textbf{Remark 3\bf.}  It may be observed from (16) that knowledge
+of an internal point $(h_0)$ in the delay range is utilized to
+define the Lypunov functional. Unlike [18], where the same Lyapunov
+matrices were used over the complete delay range, different Lyapunov
+matrices are used for the two sub-intervals to define the Lyapunov
+functional. As shown in Section 3, the defining of different
+Lyapunov matrices in the two sub-intervals along with the
+probability distribution of the delay may reduce the conservatism of
+the results.
+
+\textbf{Remark 4\bf.}   By using the loop transformation$^{[23]}$ as
+in [7], it can be easily shown that the stability analysis of system
+(6) with the nonlinearity $\varphi (t,z(t))$ satisfying the sector
+condition (3) is equivalent to the stability analysis for the
+following system in the sector $[0,K_{2}-K_{1}]$.
+\begin{align}
+ \dot{x}(t)=&\ (A-DK_{1}M)x(t)+\rho (t)(B-DK_{1}N)x(t-h_{1} (t))\,+\nonumber\\
+&\ (1-\rho
+(t))(B-DK_{1}N)x(t-h_{2} (t)) +D\omega (t)\nonumber \\
+z(t)=&\ Mx(t)+\rho (t)Nx(t-h_{1} (t))\,+\nonumber \\ &\ (1-\rho (t))Nx(t-h_{2} (t)) \nonumber\\
+x(t)=&\ \psi (t),\quad t\in \left[-h_{m},\, 0\right] \label{eqn:p26}
+\end{align}
+
+The stability criteria for the Lurie system (6) with the nonlinear
+function $\varphi (t,z(t))$ in the sector $[K_{1},K_{2}]$ is given
+below in Corollary 1. It can be easily obtained by following the
+similar procedure as in Theorem 1.
+
+\textbf{Corollary 1\bf.} For given scalars $h_m$ $(>0)$ and $\rho_0$
+$(0$ $\leq$ $\rho_0$ $\leq$ $1)$, the Lurie system represented by
+(6) with the nonlinear function $\varphi (t,z(t))$ satisfying (3) is
+absolutely stable in the mean square sense, if there exists matrices
+$P>0$, $Q_i$ $>$ $0$, $Z_i>0$ $(i=1,2)$, $S$, $T$, $W$, $U$, of
+appropriate dimensions and a scalar $\varepsilon>0$  such that the
+following LMIs hold:
+\begin{equation}
+\hat{\Omega} \left(l\right) = \left[\begin{array}{cccccc} \hat{\Xi} _{11}  & {\Sigma _{l} } &
+\hat{\Xi} _{13} & \hat{\Xi} _{14} & \hat{\Xi} _{15} & \hat{\Xi} _{16} \\ {*} & {\Upsilon _{l} }
+& {0} & {0} & {0} & {0} \\ {*} & {*} & {-Z_{1} } & {0} & {0} & {0} \\ {*} & {*} & {*} & {-Z_{1} }
+& {0} & {0} \\ {*} & {*} & {*} & {*} & {-Z_{2} } & {0} \\ {*} & {*} & {*} & {*} & {*} & {-Z_{2} } \end{array}\right] <0
+\label{eqn:p27}
+\end{equation}
+where
+\begin{equation}
+l=1, 2, 3, 4 \nonumber
+\end{equation}
+\begin{equation}
+\hat{\Xi} _{11} = \left[\begin{array}{cccccc} \hat{\Pi} _{11} & \hat{\Pi} _{12} & {0} &
+\hat{\Pi} _{14} & {0} & \hat{\Pi} _{16} \\ {*} & {0} & {0} & {0} & {0} & {\hat{\Pi} _{26} } \\
+{*} & {*} & {-Q_{1} } & {0} & {0} & {0} \\ {*} & {*} & {*} & {0} & {0} & \hat{\Pi} _{46} \\
+{*} & {*} & {*} & {*} & {-Q_{2} } & {0} \\ {*} & {*} & {*} & {*} &
+{*} & {\Pi _{66} } \end{array}\right] + \Gamma +\Gamma ^{\rm T}
+\nonumber
+\end{equation}
+\begin{align*}
+\hat{\Pi}_{11} &= \hat{A}^{\rm T}P+P\hat{A}+Q_{1}+Q_{2},~~ \hat{\Pi}_{12} =\rho_{0}P\hat{B} \nonumber \\
+\hat{\Pi}_{14}&= (1-\rho_{0})P\hat{B},~\hat{\Pi}_{16}=PD-{\varepsilon}M^{\rm T}\hat{K}^{\rm T}\nonumber \\
+\hat\Pi_{26} & ={\varepsilon}\rho_{0}N^{\rm T}\hat{K}^{\rm
+T},~\hat\Pi_{46} ={\varepsilon}(1-\rho_{0})N^{\rm T}\hat{K}^{\rm T}
+\nonumber \end{align*}\begin{align*} \hat{\Xi} _{13} & =
+\Big[{\sqrt{\rho _{0}h_{0} } Z_{1} \hat{A}}~~{\sqrt{\rho _{0}h_{0} }
+Z_{1} \hat{B}}
+\\
+& \hspace{6 mm}~~0~~0~~0 ~~{\sqrt{\rho _{0}h_{0} }Z_{1} D}\Big]^{\rm T} \nonumber \\
+\hat\Xi _{14} & = \Big[{\sqrt{(1-\rho _{0} )h_{0} } Z_{1} \hat{A}}~~0~~0~~{\sqrt{(1-\rho _{0} )h_{0} } Z_{1}\hat{B}} \nonumber \\
+& \hspace{6 mm} ~~0~~{\sqrt{(1-\rho _{0} )h_{0} } Z_{1} D}\Big]^{\rm T} \nonumber \\
+\hat\Xi _{15} & = \Big[{\sqrt{\rho _{0}h_{0m} } Z_{2}
+\hat{A}}~~{\sqrt{\rho _{0}h_{0m} } Z_{2} \hat{B}}~~0~~0~~0 \nonumber
+\\& \hspace{6 mm}~~{\sqrt{\rho _{0}h_{0m} }Z_{2} D}\Big]^{\rm T} \nonumber
+\\
+\hat\Xi _{16} & = \Big[{\sqrt{(1-\rho _{0} )h_{0m} } Z_{2} \hat{A}}~~0~~0~~{\sqrt{(1-\rho _{0} )h_{0m} } Z_{2} \hat{B}} \nonumber
+\\& \hspace{6 mm} ~~0~~{\sqrt{(1-\rho _{0} )h_{0m} } Z_{2} D}\Big]^{\rm T} \nonumber \\
+\hat{A}&=A-DK_{1}M,~~\hat{B}=B-DK_{1}N,~~\hat{K}=K_{2}-K_{1}
+\nonumber
+\end{align*}
+with $\Sigma_{l}$, $\Upsilon_{l}$, $\Pi_{66}$, $\Gamma$ being the
+same as defined in (15).
+
+As shown in Theorem 2 below, the approach of Theorem 1 can be
+extended to the robust absolute stability analysis of the
+time-delayed Lurie system with time-varying parametric
+uncertainties. For this case the system is represented by
+(10)\,$\sim$\,(12).
+
+\textbf{Theorem 2\bf.} For given scalars $h_m\;(>0)$ and $\rho_0$
+$(0$ $\leq$ $\rho_0$ $\leq$ $1)$, the uncertain Lurie system
+represented by (12) with the nonlinear function $\varphi (t,z(t))$
+satisfying (2) is absolutely stable in the mean square sense, if
+there exist matrices $P>0$, $Q_i>0$, $Z_i>0$ $(i=1,2)$, $S$, $T$,
+$W$, $U$ of appropriate dimensions and scalars $\varepsilon>0$ and
+$\mu>0$ such that the following LMIs hold:
+\begin{equation}
+\begin{array}{l} {\bar{\Omega }\left(l\right)=\left[\begin{array}{ccccccc} {\Xi _{11} } &
+{\Sigma _{l} } & {\Xi _{13} } & {\Xi _{14} } & {\Xi _{15} } & {\Xi _{16} } & {\Xi _{17} } \\
+{*} & {\Upsilon _{_{l} } } & {0} & {0} & {0} & {0} & {0} \\ {*} & {*} & {-Z_{1} } & {0} & {0} & {0} & {0} \\
+{*} & {*} & {*} & {-Z_{1} } & {0} & {0} & {0} \\ {*} & {*} & {*} & {*} & {-Z_{2} } & {0} & {0} \\
+{*} & {*} & {*} & {*} & {*} & {-Z_{2} } & {0} \\ {*} & {*} & {*} & {*} & {*} & {*} & {-\mu I} \\
+{*} & {*} & {*} & {*} & {*} & {*} & {*} \\ {*} & {*} & {*} & {*} & {*} & {*} & {*} \\
+{*} & {*} & {*} & {*} & {*} & {*} & {*} \\ {*} & {*} & {*} & {*} & {*} & {*} & {*} \\
+{*} & {*} & {*} & {*} & {*} & {*} & {*} \end{array}\right. } \\
+\\{\, \, \, \, \, \, \, \, \, \, \, \, \, \, \, \, \, \, \, \,
+\left.\qquad
+\begin{array}{ccccc}
+{\mu \Xi _{18} } & {0} & {\mu \Xi _{110} } & {0} & {\mu \Xi _{112} } \\
+{0} & {0} & {0} & {0} & {0} \\ {0} & {\Xi _{39} } & {0} & {0} & {0} \\
+{0} & {0} & {0} & {\Xi _{411} } & {0} \\ {0} & {\Xi _{59} } & {0} & {0} & {0} \\
+{0} & {0} & {0} & {\Xi _{611} } & {0} \\ {0} & {0} & {0} & {0} & {0} \\ {-\mu I} & {0} & {0} & {0} & {0} \\
+{*} & {-\mu I} & {0} & {0} & {0} \\ {*} & {*} & {-\mu I} & {0} & {0} \\ {*} & {*} & {*} & {-\mu I} & {0} \\
+{*} & {*} & {*} & {*} & {-\mu I} \end{array}\right]<0} \end{array}\
+\label{eqn:p28}
+\end{equation}
+where
+\begin{equation}
+l=1, 2, 3, 4  \nonumber
+\end{equation}
+\begin{align*}
+\Xi _{17}& =[H^{\rm T}P~~0~~0~~0~~0~~0]^{\rm T},~\Xi _{39}=\sqrt{{\rho_0}h_0}Z_{1}H  \nonumber
+\\[1mm]
+\Xi _{18} &=[E_{a}~~{\rho_0}E_{b}~~0~~({1-\rho_0})E_{b}~~0~~E_{d}]^{\rm T} \nonumber  \\[1mm]
+\Xi _{110}&=[E_{a}~~E_{b}~~0~~0~~0~~E_{d}]^{\rm T},~\Xi
+_{59}=\sqrt{{\rho_0}h_{0m}}Z_{2}H  \nonumber \end{align*}
+\begin{align*}
+\Xi_{112}&=[E_{a}~~0~~0~~E_{b}~~0~~E_{d}]^{\rm T} \nonumber \\[1mm]
+\Xi _{411}&=\sqrt{({1-\rho_0}h_0})Z_{1}H,~~ \Xi
+_{611}=\sqrt{({1-\rho_0}h_{0m}})Z_{2}H  \nonumber
+\end{align*}
+$\Xi _{11}$,~$\Xi _{13}$, $\Xi _{14}$, $\Xi _{15}$, $\Xi _{16}$,
+$\Sigma _{l}$, $\Upsilon_{l}$ being the same as defined in (15).
+
+\textbf{Proof\bf.} On replacing $A$,~$B$ and $D$ in (15) by
+$A+HF(t)E_a$,~$B+HF(t)E_b$, and $D+HF(t)E_d$, respectively, we get
+the following:
+\begin{equation}
+\Omega(l)+\bar{H}F(t)\bar{E}+\bar{E}^{\rm T}F(t)\bar{H}^{\rm T}<0,
+~~ l = 1,2,3,4 \label{eqn:p29}
+\end{equation}
+where $\Omega(l)$ is defined in (15) and
+\begin{align*}
+\bar{H} &= [\bar{H}_1~\bar{H}_2~\bar{H}_3],~ \bar{E} = [\bar{E}^{\rm T}_1~\bar{E}^{\rm T}_
+2~\bar{E}^{\rm T}_3]^{\rm T}  \nonumber \\[1mm]
+\bar{H}_{1} &= [H^{\rm T}P~~0~~0~~0~~0~~0~~0~~0~~0~~0~~0]^{\rm T}  \nonumber \\[1mm]
+\bar{H}_{2}&=[0~~0~~0~~0~~0~~0~~0~~\sqrt{\rho_{0}h_0}H^{\rm T}Z_1~~0   \nonumber \\[1mm]
+&\hspace{6 mm}\sqrt{\rho_{0}h_{0m}}H^{\rm T}Z_2~~0]^{\rm T} \nonumber \\[1mm]
+\bar{H}_{3}&=[0~~0~~0~~0~~0~~0~~0~~0~~\sqrt{(1-\rho_{0}h_0})H^{\rm T}Z_1   \nonumber \\[1mm]
+&\hspace{6 mm}~0~~\sqrt{(1-\rho_{0}h_{0m})}H^{\rm T}Z_2]^{\rm T}  \nonumber  \\[1mm]
+\bar{E}_{1}&=[E_a~~\rho_{0}E_{b}~~0~~(1-\rho_0)E_{b}~~0~~E_{d}~~0~~0~~0~~0~~0] \nonumber \\[1mm]
+\bar{E}_{2}&=[E_a~~E_{b}~~0~~0~~0~~E_{d}~~0~~0~~0~~0~~0] \nonumber \\[1mm]
+\bar{E}_{3}&=[E_a~~0~~0~~E_{b}~~0~~E_{d}~~0~~0~~0~~0~~0] \nonumber
+\end{align*}
+
+On applying Lemma 2, it can be shown that (29) is equivalent to the
+following
+\begin{equation}
+\Omega(l)+\mu^{-1}\bar{H}\bar{H}^{\rm T}+\mu\bar{E}^{\rm T}\bar{E}<0
+\label{eqn:p30}
+\end{equation}
+
+On applying Lemma 1 to (30), it can be shown that (30) is equivalent
+to (28).  \hfill   $ \square$
+
+The stability criteria for the Lurie system (12) with the nonlinear
+function $\varphi (t,z(t))$ satisfying (3) is given below in
+Corollary 2. It can be obtained from Corollary 1 by following the
+similar procedure as in Theorem 2.
+
+\textbf{Corollary 2\bf.} For given scalars $h_m\;(>0)$ and $\rho_0$
+$(0$ $\leq$ $\rho_0$ $\leq$ $1)$, the uncertain Lurie system
+represented by (12) with the nonlinear function $\varphi (t,z(t))$
+satisfying (3) is absolutely stable in the mean square sense, if
+there exist matrices $P>0$, $Q_i>0$, $Z_i>0$ $(i=1,2)$, $S$, $T$,
+$W$, $U$ of appropriate dimensions and scalars $\varepsilon>0$ and
+$\mu>0$ such that the following LMIs hold:
+\begin{equation}
+ {\hat{\Omega }_{2} \left(l\right)=\left[\begin{array}{ccccccc}
+{\hat{\Xi }_{11} } & {\Sigma _{l} } & {\hat{\Xi }_{13} } & {\hat{\Xi
+}_{14} } & {\hat{\Xi }_{15} } & {\hat{\Xi }_{16} } & {\Xi _{17} } \\
+{*} & {\Upsilon _{_{l} } } & {0} & {0} & {0} & {0} & {0} \\ {*} &
+{*} & {-Z_{1} } & {0} & {0} & {0} & {0} \\ {*} & {*} & {*} & {-Z_{1}
+} & {0} & {0} & {0} \\ {*} & {*} & {*} & {*} & {-Z_{2} }
+& {0} & {0} \\ {*} & {*} & {*} & {*} & {*} & {-Z_{2} } & {0} \\ {*} & {*} & {*} & {*} & {*} & {*} & {-\mu I} \\
+{*} & {*} & {*} & {*} & {*} & {*} & {*} \\ {*} & {*} & {*} & {*} & {*} & {*} & {*} \\
+{*} & {*} & {*} & {*} & {*} & {*} & {*} \\ {*} & {*} & {*} & {*} & {*} & {*} & {*} \\
+{*} & {*} & {*} & {*} & {*} & {*} & {*} \end{array}\right.
+}\nonumber
+\end{equation} \begin{equation}\, \, \, \, \, \, \, \, \, \, \, \, \, \, \, \, \,
+\, \, \, \left. \begin{array}{ccccc}
+{\mu \hat{\Xi }_{18} } & {0} & {\mu \hat{\Xi }_{110} } & {0} & {\mu \hat{\Xi }_{112} } \\
+{0} & {0} & {0} & {0} & {0} \\ {0} & {\Xi _{39} } & {0} & {0} & {0} \\
+{0} & {0} & {0} & {\Xi _{411} } & {0} \\ {0} & {\Xi _{59} } & {0} & {0} & {0} \\
+{0} & {0} & {0} & {\Xi _{611} } & {0} \\ {0} & {0} & {0} & {0} & {0} \\
+{-\mu I} & {0} & {0} & {0} & {0} \\ {*} & {-\mu I} & {0} & {0} & {0} \\
+{*} & {*} & {-\mu I} & {0} & {0} \\ {*} & {*} & {*} & {-\mu I} & {0} \\
+{*} & {*} & {*} & {*} & {-\mu I} \end{array}\right]<0 \
+\label{eqn:p31}
+\end{equation}
+where
+\begin{equation}
+l=1, 2, 3, 4  \nonumber
+\end{equation}
+\begin{align*}
+\hat{\Xi} _{18} &=[E_{a}-E_{d}K_{1}M~~{\rho_0}(E_{b}-E_{d}K_{1}N)~~0 \nonumber \\
+& \hspace{6 mm}~~0~~({1-\rho_0})(E_{b}-E_{d}K_{1}N)~~0~~E_{d}]^{\rm T}  \nonumber  \\
+\hat\Xi _{110}&=[E_{a}-E_{d}K_{1}M~~E_{b}-E_{d}K_{1}N~~0~~0~~0~~E_{d}]^{\rm T}  \nonumber \\
+\hat\Xi_{112}&=[E_{a}-E_{d}K_{1}M~~0~~0~~E_{b}-E_{d}K_{1}N~~0~~E_{d}]^{\rm
+T} \nonumber
+\end{align*}
+with $\hat{\Xi} _{11}$,~$\hat{\Xi} _{13}$,~$\hat{\Xi}
+_{14}$,~$\hat{\Xi} _{15}$,~$\hat{\Xi} _{16} $,~$\Sigma
+_{l}$,~$\Upsilon_{l}$ being the same as defined in (27) and $\Xi
+_{17}$,~$\Xi _{39}$,~$\Xi _{59}$,~$\Xi _{411}$,~$\Xi _{611}$ being
+defined in (28).
+
+
+If we set $\rho(t)=1$  and $N=0$  in (6), then system (6) reduces to
+the following time-delay Lurie system (32) with time-varying delay
+$h_{1}(t)$ such that $h_{1}(t)\in [0,h_0]$, where $h_0$ is now the
+upper delay bound.
+\begin{align}
+\dot{x}(t)=&\ {A}x(t)+{B}x(t-h_1(t))+{D}\omega (t) \nonumber\\
+z(t)=&\ Mx(t) \nonumber\\ \omega (t)=&-\varphi (t,z(t))\nonumber \\
+x(t)=&\ \psi(t),~~t\in\left[-h_0, \, 0 \right]\ \label{eqn:p32}
+\end{align}
+Using the result of Theorem 1, the following Corollary is obtained
+for the stability analysis of system (32).
+
+\textbf{Corollary 3}{\bf.}  For a given upper delay bound $h_0$
+$(>0)$, the Lurie system represented by (32) with the nonlinear
+function $\varphi (t,z(t))$ satisfying (2) is stable in the mean
+square sense, if there exist matrices $P>0$, $Q_{1}>0$, $Z_{1}>0$,
+$S$ $=$ $[S^{\rm T}_{1}~~S^{\rm T}_{2}~~0~~0~~0~~0]^{\rm T}$,
+$T=[T^{\rm T}_{1}~~T^{\rm T}_{2}~~0~~0~~0~~0]^{\rm T}$   of
+appropriate dimensions such that the following LMIs hold:
+\begin{equation}
+\Lambda \left(i\right)=\left[\begin{array}{cccccc} {\lambda _{11} }
+& {\lambda _{12} } & {-T_{1} } & {\lambda _{14} } & {\lambda _{15}^{i} } & {\lambda _{16} } \\
+{*} & {\lambda _{22} } & {-T_{2} } & {0} & {\lambda _{25}^{i} } & {\lambda _{26} } \\
+{*} & {*} & {-Q_{1} } & {0} & {0} & {0} \\ {*} & {*} & {*} & {-2I} & {0} & {\lambda _{46} } \\
+{*} & {*} & {*} & {*} & {-h_{0} Z_{1} } & {0} \\ {*} & {*} & {*} & {*} & {*} & {-Z_{1} } \end{array}\right]<0\
+\label{eqn:p33}
+\end{equation}
+where
+\begin{equation}
+i=1,2  \nonumber
+\end{equation}
+\begin{align*}
+\lambda_{11} &= A^{\rm T}P+PA+Q_{1}+S_{1}+S^{\rm T}_{1},~~ \lambda_{14} = PD-M^{\rm T}K^{\rm T} \nonumber \\
+\lambda_{12} &=PB-S_{1}+S^{\rm T}_{2}+T_{1},~~\lambda^{1}_{15}=-h_{0}S_{1},~~\lambda^{2}_{15}=-h_{0}T_{1} \nonumber \\
+\lambda_{16}&=\sqrt{h_0}A^{\rm T}Z_{1},~\lambda_{22}=-S_{2}-S^{\rm T}_{2}+T_{2}+T^{\rm T}_{2}  \nonumber \\
+\lambda^{1}_{25}&=-h_{0}S_{2},~\lambda^{2}_{25}=-h_{0}T_{2},~\lambda_{26}=\sqrt{h_0}B^{\rm T}Z_{1}  \nonumber  \\
+\lambda_{46}&=\sqrt{h_0}D^{\rm T}Z_{1}
+\end{align*}
+
+{\bf Proof.} The above condition can be derived from (15) by
+equating $\rho_{0}=1$, $\varepsilon=1$, $N=0$, $U=0$, $W=0$,
+$Z_{2}=0$, $Q_{2}$ $=$ $0$ and replacing $-2h_{0}S_{1}$,
+$-2h_{0}S_{2}$, $-2h_{0}T_{1}$, $-2h_{0}T_{2}$ and $-2h_{0}Z_{1}$ by
+$-h_{0}S_{1}$, $-h_{0}S_{2}$, $-h_{0}T_{1}$, $-h_{0}T_{2}$ and
+$-h_{0}Z_{1}$, respectively.  \hfill   $\square$
+
+{\bf Remark 5.}  The stability condition (33) derived in Corollary 3
+is the same as the stability condition presented in Theorem 1 of
+[18] for the absolute stability of time delay Lurie system. This
+shows that the stability condition in Theorem 1 of [18] is a special
+case of our result.
+
+\section{Numerical examples}
+{\bf Example 1.} Consider system (1) with the following system
+matrices$^{[18]}$:
+\begin{equation}
+A=\left[\begin{array}{ccc} {0} & {1} \\ {1} & {-2} \end{array}\right],
+\,B=\left[\begin{array}{ccc} {-0.7539} & {-0.3319} \\
+{0} & {0} \end{array}\right],\, D=\left[\begin{array}{ccc} {0} \\
+{1} \end{array}\right] \nonumber
+\end{equation}
+\begin{equation}
+M=\left[\begin{array}{ccc} {1} & {-0.5} \end{array}\right],
+~~N=\left[\begin{array}{ccc} {0} & {0} \end{array}\right],~~ K={1}
+\nonumber
+\end{equation}
+
+Table 1 shows a comparison of the maximum allowable delay $(h_{m})$
+obtained by Theorem 1 for $h_{0}=0.5$ and different values of
+$\rho_{0}$ with some of the earlier results.
+
+
+
+\vskip3mm \vbox{\centering{\small Table 1\quad Comparison of the
+delay bound} \vskip2mm
+\renewcommand{\baselinestretch}{1.35}
+{\footnotesize\centerline{\tabcolsep=26pt\begin{tabular}{cccccccccccc}
+\toprule
+Approach                                &          Delay bound              \\
+\hline
+ Reference $[24]$ &                      1.2562\\
+Reference $[18]$&          1.2890\\
+Theorem 1 ($\rho_{0}=0.4$)                  &          1.5344                  \\
+Theorem 1 ($\rho_{0}=0.7$)                  &          2.0606                  \\
+Theorem 1 ($\rho_{0}=0.9$)                  &          4.3815                  \\
+Theorem 1 ($\rho_{0}=0.99$)                &           15.8235                 \\
+ \bottomrule
+\end{tabular}}}}\vskip4mm
+
+{\bf Remark 6.}  It can be observed from Table 1 that when the
+probability distribution of the delay is known a priori, using the
+results of this paper can lead to a larger upper delay bound than
+that obtained by using the conventional approach of using the delay
+range information only.
+
+{\bf Example 2.}  Consider the time delay Chua$'$s oscilla-
+tor$^{[12]}$ with the following system matrices:
+\begin{align*}
+A&=\left[\begin{array}{ccc} {1.3018} & {-1.3018} & {0} \\ {1} & {-1} & {1} \\ {0} & {0.0136} & {0.0297} \end{array}\right]
+\nonumber \\
+B&=\left[\begin{array}{ccc} {-1} & {1} & {1} \\ {0} & {-1} & {-1} \\ {-0.368} & {0} & {-1} \end{array}\right],
+~~~D=\left[\begin{array}{ccc} {1.3018} \\ {0} \\  {0} \end{array}\right] \nonumber \\
+M&=\left[\begin{array}{ccc} {1} & {0} & {0} \end{array}\right], ~~~
+N=\left[\begin{array}{ccc} {0} & {0} & {0} \end{array}\right]
+\nonumber
+\end{align*}
+\begin{equation}
+\hspace{-6 mm}K_{1} =-0.1 , ~~ K_{2} =0.3 \nonumber
+\end{equation}
+
+Table 2 shows the maximum allowable delay obtained by Corollary 1
+for $h_0=0.2$ and different values of $\rho_0$.
+
+\vskip3mm \vbox{\centering{\small Table 2 \quad Comparison of the
+delay bounds} \vskip2mm
+\renewcommand{\baselinestretch}{1.35}
+{\footnotesize\centerline{\tabcolsep=26pt\begin{tabular}{cccccccccccc}
+\toprule
+Approach                                 &          Delay bound              \\
+\hline Corollary 1 ($\rho_{0}=0.4$)                  &
+0.3757                  \\
+                 Corollary 1 ($\rho_{0}=0.7$)                  &          0.5190                  \\
+                 Corollary 1 ($\rho_{0}=0.9$)                  &          0.9344                  \\
+                  Corollary 1 ($\rho_{0}=0.99$)                &           4.0160                 \\
+ \bottomrule
+\end{tabular}}}}\vskip4mm
+
+
+
+\section{Conclusion}
+
+In this paper, the problem of robust absolute stability for Lurie
+system with stochastic time delay and norm-bounded parametric
+uncertainties has been investigated. By using the information of
+probability distribution of the time-delay, a new model of the time
+delayed Lurie system was proposed. In addition to the delay bound,
+the additional information about the delay in terms of the
+probability distribution was used to derive the stability condition.
+The sufficient conditions for the MSS were obtained in terms of
+LMIs. Furthermore, it has been shown with the help of examples that
+when the probability distribution of the delay is known a priori, a
+larger upper delay bound can be obtained than that obtained by the
+existing methods.
+
+%\section*{Acknowledgement}
+%
+%The authors would like to acknowledge \ldots
+%
+\begin{thebibliography}{99}
+\zihao{6} \addtolength{\itemsep}{-0.0em} \urlstyle{rm}
+
+
+\bibitem{1} Popov V M. Absolute stability of nonlinear systems of automatic control. \textsl{Automation and Remote Control}, 1962, \textbf{22}(8): 857$-$875
+\bibitem{2} Park P. A revisited Popov criterion for nonlinear Lur$'$e systems with sector-restrictions. \textsl{International Journal of Control}, 1997, \textbf{68}(3): 461$-$469
+\bibitem{3} Liao X, Yu P. \textsl{Absolute Stability of Nonlinear Control Systems (Second edition)}. Dordrecht: Springer, 2008
+\bibitem{4} Bliman P A. Lyapunov-Krasovskii functionals and frequency domain: delay-independent absolute stability criteria for delay systems. \textsl{International Journal of Robust and Nonlinear Control}, 2001, \textbf{11}(8): 771$-$788
+\bibitem{5} He Y, Wu M. Absolute stability for multiple delay general Lur$'$e control systems with multiple nonlinearities. \textsl{Journal of Computational and Applied Mathematics}, 2003, \textbf{159}(2): 241$-$248
+\bibitem{6} Yu L, Han Q L, Yu S, Gao J. Delay-dependent conditions for robust absolute stability of uncertain time-delay systems. In: Proceedings of the 42nd IEEE Conference on Decision and Control. Hawaii, USA: IEEE, 2003. 6033$-$6037
+\bibitem{7} Han Q L. Absolute stability of time-delay systems with sector-bounded nonlinearity. \textsl{Automatica}, 2005, \textbf{41}(12): 2171$-$2176
+\bibitem{8} He Y, Wu M, She J H, Liu G P. Robust stability for delay Lur$'$e control systems with multiple nonlinearities. \textsl{Journal of Computational and Applied Mathematics}, 2005, \textbf{176}(2): 371$-$380
+\bibitem{9} Lee S M, Park J H. Delay-dependent criteria for absolute stability of uncertain time-delayed Lur$'$e dynamical systems. \textsl{Journal of the Franklin Institute}, 2010, \textbf{347}(1): 146$-$153
+\bibitem{10} Cao J, Zhong S, Hu Y. Delay-dependent condition for absolute stability of Lurie control systems with multiple time delays and nonlinearities. \textsl{Journal of Mathematical Analysis and Applications}, 2008, \textbf{338}(1): 497$-$504
+\bibitem{11} Han Q L. A new delay-dependent absolute stability criterion for a class of nonlinear neutral systems. \textsl{Automatica}, 2008, \textbf{44}(1): 272$-$277
+\bibitem{12} Liu X, Wang J, Duan Z, Huang L. New absolute stability criteria for time-delay Lur$'$e systems with sector-bounded nonlinearity. \textsl{International Journal of Robust and Nonlinear Control}, 2010, \textbf{20}(6): 659$-$672
+\bibitem{13} Han Q L, Yue D. Absolute stability of Lur$'$e systems with time-varying delay. \textsl{IET Control Theory and Applications}, 2007, \textbf{1}(3): 854$-$859
+\bibitem{14} Wu M, Feng Z Y, He Y, She J H. Improved delay-dependent absolute stability and robust stability for a class of nonlinear systems with a time varying delay. \textsl{International Journal of Robust and Nonlinear Control}, 2010, \textbf{20}(6): 694$-$702
+\bibitem{15} Gao J F, Pan H P, Ji X F. A new delay-dependent absolute stability criterion for Lurie systems with time-varying delay. \textsl{Acta Automatica Sinica}, 2010, \textbf{36}(6): 845$-$850
+\bibitem{16} Qiu F, Cui B, Ji Y. Delay-dividing approach for absolute stability of Lurie control system with mixed delays. \textsl{Nonlinear Analysis: Real World Applications}, 2010, \textbf{11}(4):
+3110$-$3120\\
+\bibitem{17} Yue D, Tian E, Wang Z, Lam J. Stabilization of systems with probabilistic interval input delays and its applications to networked control systems. \textsl{IEEE Transactions on Systems, Man, and Cybernetics, Part A: Systems and Humans}, 2009, \textbf{39}(4): 939$-$945
+\bibitem{18} Zeng H B, He Y, Wu M, Xiao S P. Absolute stability and stabilization for Lurie networked control systems. \textsl{International Journal of Robust and Nonlinear Control}, 2011, \textbf{21}(14): 1667$-$1676
+\bibitem{19} Mao X. Exponential stability of stochastic delay interval systems with Markovian switching. \textsl{IEEE Transactions on Automatic Control}, 2002, \textbf{47}(10): 1604$-$1612
+\bibitem{20} Xu S, Chen T. Robust $H_{\infty }$ control for uncertain stochastic systems with state delay. \textsl{IEEE Transactions on Automatic Control}, 2002, \textbf{47}(12): 2089$-$2094
+\bibitem{21} Boyd S, Ghaouri L E, Feron E, Balakrishnan V. \textsl{Linear Matrix Inequalities in System and Control Theory}. Philadelphia: SIAM, 1994
+\bibitem{22} Petersen I R. A stabilization algorithm for a class of uncertain linear systems. \textsl{Systems and Control Letters}, 1987, \textbf{8}(4): 351$-$357
+\bibitem{23} Khalil H K. \textsl{Nonlinear Systems}. New Jersey: Prentice-Hall, 1996
+\bibitem{24} Hao F, Zhao X. Absolute stability of Lurie networked control systems. \textsl{International Journal of Robust and Nonlinear Control}, 2010, \textbf{20}(12): 1326$-$1337
+
+\end{thebibliography}
+
+
+\begin{biography}[pm.eps]
+\noindent{\bf MUKHIJA Pankaj}\quad Ph.\,D. candidate in the
+Department of Electrical Engineering, Indian Institute of Technology
+Delhi, India. His research interest covers time-delay systems and
+networked control systems. Corresponding
+author of this paper. \\
+E-mail: pankaj.mukhija@gmail.com
+\end{biography}
+\vskip12mm
+\begin{biography}[ink.eps]
+\noindent{\bf KAR Indra Narayan }\quad Professor in the Department
+of Electrical Engineering, Indian Institute of Technology Delhi,
+India. He received his master and Ph.\,D. degrees from Indian
+Institute of Technology, Kanpur in 1991 and 1997, respectively. His
+research interest covers nonlinear systems, control of multi-agent
+systems, and  robust-optimal control. E-mail: ink@ee.iitd.ac.in
+\end{biography}
+\vskip4mm
+\begin{biography}[rkp.eps]
+\noindent{\bf  BHATT Rajendra Kumar Purushottam}\quad Professor in
+the Department of Electrical Engineering, Indian Institute of
+Technology Delhi, India. He received his master and Ph.\,D. degrees
+from Indian Institute of Technology, Kanpur and Indian Institute of
+Technology Delhi, India, respectively.  His research interest covers
+adaptive control, nonlinear dynamics, and image processing.\\
+E-mail: rkpb@ee.iitd.ac.in
+
+\end{biography}
+\end{document}

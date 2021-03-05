@@ -1,0 +1,1007 @@
+\documentclass{aas}
+\usepackage{multicol}
+\usepackage{psfig}
+\usepackage{subfigure}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{ccaption}
+\usepackage{booktabs} % 做三线表的上下两条粗线用
+\usepackage{tabularx}
+\usepackage{multirow}
+
+
+
+\setcounter{page}{1134}
+
+\begin{document}
+
+\cntitle{{\hei\qquad\quad\  自适应最小误差阈值分割算法 }
+\thanks{ 收稿日期\ 2011-09-22 \quad 录用日期\ 2012-02-08}
+\thanks{
+Manuscript received September 22, 2011; accepted February 8, 2012 }
+\thanks{
+国家自然科学基金(60973090), 吉林省自然科学基金(201115025), 教
+育部重点实验室开放基金(450060445325),
+吉林大学研究生创新基金(20111063, 20121104)资助 }
+\thanks{
+Supported by National Natural Science Foundation of China
+(60973090), Natural Science Grant of Jilin Province (2011150 25),
+Opening Project of Key Laboratory Ministry of Education
+(450060445325), and Graduate Innovation Fund of Jilin University
+(20111063, 20121104) }
+\thanks{本文责任编委\ 章毓晋}
+\thanks{Recommended by Associate Editor ZHANG Yu-Jin}
+\thanks{
+1. 吉林大学计算机科学与技术学院\ 长春\ 130012 \quad 2.
+吉林大学符号计算与知识工程教育部重点实验室\ 长春\ 130012 }
+\thanks{
+1. College of Computer Science and Technology, Jilin University,
+Changchun 130012 \quad 2. Key Laboratory of Symbolic Computation and
+Knowledge Engineering of Ministry of Education, Jilin University,
+Changchun 130012 } }
+
+\cnauthor{ 龙建武$^{\scriptscriptstyle 1,\,2}$ \hspace{1em}
+申铉京$^{\scriptscriptstyle 1,\,2}$ \hspace{1em}
+陈海鹏$^{\scriptscriptstyle 1,\,2}$ }
+
+\cnabstract{对二维最小误差法进行三维推广,
+并结合三维直方图重建和降维思想提出了一种鲁 棒的最小误差阈值分割算法.
+但该方法为全局算法, 仅适用于分割均匀光照图像. 为 提高其自适应性,
+本文采用Water flow模型对非均匀光照图像进行背景估计, 以此获
+得原始图像与背景图像的差值图像,
+达到降低非均匀光照对图像分割造成干扰的目的. 为进 一步提高分割性能,
+本文对差值图像采用$\gamma$ 矫正进行增强, 然后采用鲁棒最小误差
+法进行全局分割, 从而完成目标提取.
+最后本文对均匀光照下以及非均匀光照下图像进行了 实验,
+并与一维最小误差法、二维最小误差法、三维直方图重建和降维的Otsu阈值分割
+算法、灰度波动变换自适应阈值方法以及一种改进的FCM方法在错误分割率和运行时间上进
+行了对比. 实验结果表明, 相对于以上方法,
+本算法的分割性能均有明显提升.} \cnkeyword{图像分割, 自适应阈值分割,
+Water flow模型, 最小误差法}
+
+
+\entitle{ Adaptive Minimum Error Thresholding Algorithm } \enauthor{
+LONG Jian-Wu$^{1,\,2}$ \qquad SHEN Xuan-Jing$^{1,\,2}$ \qquad CHEN
+Hai-Peng$^{1,\,2}$ }
+
+\enabstract{A robust minimum error thresholding method is proposed
+to combine the three-dimensional (3D) minimum error thresholding
+scheme based on 2D method with the principle of rebuilding and
+dimension reduction of the 3D histogram. Considering the global
+behavior of this approach and its ability  to process even
+illumination images only, a water flow model is used to estimate the
+background of uneven illumination images for improving adaptability
+of the proposed method. Then, the difference image between the
+original image and background can be readily obtained to reduce the
+interference of uneven illumination during the binarization process.
+To improve execution performance of  the segmentation procedure,
+gamma correction is employed to enhance image in addition to a
+global segmentation using robust minimum error thresholding
+algorithm. Subsequently, image segmentation tests are carried out
+with even and uneven illumination, and then comparison on
+misclassification error and time expenditure are performed between
+the proposed method and other approaches, i.e., 1D/2D minimum error
+thresholding, Otsu thresholding algorithm based on 3D histogram
+rebuilding and dimensionality reduction, adaptive gray wave
+transformation thresholding scheme, as well as a modified FCM
+method. The results show that the  proposed approach yields better
+thresholding performance than those methods.} \enkeyword{Image
+segmentation, adaptive thresholding, water flow model, minimum error
+method} \doi{10.3724/SP.J.1004.2012.01134}
+
+
+
+\cnaddress{龙建武, 申铉京, 陈海鹏. 自适应最小误差阈值分割算法.
+自动化学报, 2012, \textbf{38}(7): 1134$-$1144}
+
+\enaddress{Long Jian-Wu, Shen Xuan-Jing, Chen Hai-Peng. Adaptive
+minimum error thresholding algorithm. \textsl{Acta Automatica
+Sinica}, 2012, \textbf{38}(7):  1134$-$1144}
+
+\maketitle
+
+\pagestyle{aasheadings}
+
+
+图像分割是一个经典的图像处理问题, 是图像理解和识别的基础,
+在模式识别、计算机视觉、医学图像处理等领域中有着十分广泛的应用.
+图像分割技术目前仍为一个研究热点, 同时也是一个研究难点.
+其主要目的是将感兴趣目标从复杂背景区域中提取出来, 以便进行目标识别.
+其中, 阈值分割技术是一种非常重要的图像分割技术,
+它以其简单、有效、便于理解的特性而得到了广泛的研究与应用.
+经典阈值分割算法主要包括最小误差法\,\!$^{[1]}$、最大类间方差法(Otsu法)\,\!$^{[2]}$和最大熵法\,\!$^{[3]}$.
+2004年, Sezgin等通过对40种阈值算法的研究分析,
+在其综述\,\!$^{[4]}$中指出最小误差法具有非常优秀的分割性能.
+最小误差法\,\!$^{[1]}$是由Kittler等在1986年提出.
+该方法首先假设目标和背景的灰度分布均服从一个高斯分布,
+然后拟合出一个混合高斯模型,
+将二值化问题转化为最小误差化高斯分布拟合问题.
+Fan等于1997年用相对熵理论对最小误差阈值方法进行了解释\,\!$^{[5]}$,
+奠定了该方法的理论基础. 考虑到Kittler等提出的最小误差法
+(简称一维最小误差法)只利用图像灰度信息, 对含噪图像分割效果较差,
+范九伦等将图像灰度和均值信息结合起来,
+对一维最小误差法进行了二维推广\,\!$^{[6]}$.
+该推广方法有效降低了高斯噪声对分割结果的影响. 此外, 在
+ 对Otsu阈值分割算法的研究过程中,
+为使低对比度和低信噪比图像有较好的分割结果,
+景晓军等将图像中值信息考虑进来,
+提出了一种结合灰度、均值和中值信息的三维分割思想\,\!$^{[7]}$. 随后,
+范九伦等对其进一步改进, 提出了一种快速三维递推算法\,\!$^{[8]}$.
+但这两种方法均存在着区域误划分问题, 同时时间和空间复杂度均较高,
+鲁棒性较差. 对此,
+申铉京等提出了一种三维直方图重建和降维的Otsu阈值分割算法\,\!$^{[9]}$.
+该算法不仅充分考虑了图像灰度、均值和中 值信息,
+而且通过三维直方图重建有效提高了抗噪性能, 再通过三维直方图降维,
+使得该方法与一维最小误差法\,\!$^{[2]}$具有相同的时间复杂度,
+并且相对于三维快速递推算法\,\!$^{[8]}$,
+该算法的执行效率得到有效提高. 另外,
+近年来基于FCM的图像分割算法也得到了大量研究\,\!$^{[10-11]}$.
+Krinidis等通过对现有经典全局算法包括传统FCM、约束FCM、增强型FCM和快速广义FCM的对比分析\,\!$^{[10]}$,
+发现这些方法要么抗噪性能较差, 要么是对参数十分敏感,
+为此于2010年提出了一种无参数的利用局部信息的FCM算法\,\!$^{[10]}$,
+并取得了相对理想的分割效果. 但遗憾的是, 该方法仍为全局方法,
+而无法有效处理非均匀光照图像.
+
+本文根据三维直方图重建思想提出了一种鲁棒去噪模型,
+同时对二维最小误差法进行了三维推广, 并结合三维直方图重建和降维思想,
+提出了一种鲁棒的最小误差阈值分割算法.
+以上方法均属于全局阈值分割算法, 仅限于处理均匀光照图像,
+而对于不均匀光照图像, 只能采用局部阈值分割算法进行处理. 2007年,
+Ma等结合偏置场和邻域均值信息,
+提出了一种改进的FCM分割算法\,\!$^{[11]}$.
+该方法能够有效处理非均匀光照图像, 但抗噪性较低, 同时对参数十分敏感.
+考虑到邻域信息灰度波动变化,
+魏巍等于2011年提出了一种多方向灰度波动变换的自适应阈值分割算法\,\!$^{[12]}$.
+该方法首先构造多方向灰度变化矩阵,
+然后利用PCA方法进行降维以降低非均匀光照的干扰,
+最后再采用Otsu法进行全局分割. 此灰度变换方法同样对参数非常敏感,
+尤其是灰度波动阈值的选取. 为估计非均匀光照图像背景,
+Kim等于2002年提出了一种Water flow模型\,\!$^{[13]}$.
+该模型通过估计文本图像背景, 以此来降低不均匀光照对图像的干扰,
+然后再进行全局分割. 该方法将图像曲面看成一个三维地形,
+假设图像由暗目标和亮背景组成, 那么字符将处于地形中的山谷位置,
+然后通过向山谷不断积水达到提取背景的目的.
+但该方法是对图像中的所有像素点进行降水操作, 处理效率很低,
+为此Oh等于2005年提出了一种改进的Water flow模型\,\!$^{[14]}$.
+改进模型只对感兴趣区域内的种子点即边缘像素点进行降水操作,
+有效提高了执行效率. Water flow模型主要用于对文本等小目标图像的处理,
+而针对大目标图像的处理却受到了限制.
+
+针对鲁棒最小误差法的全局性限制,
+本文首先对非均匀光照下小目标图像采用文献[14]中改进的Water
+flow模型估计背景,
+然后对去除背景后图像采用本文的鲁棒最小误差法进行全局分割.
+本文提出的自适应最小误差阈值分割算法仅含有一个参数,
+且参数敏感性很低,
+同时对均匀光照图像以及不均匀光照小目标图像均有着优秀的处理效果,
+提升了最小误差算法的分割性能.
+
+\section{相关算法概述}
+\subsection{最小误差阈值分割算法\,\!$^{[1]}$}
+
+在一幅大小为$M \times N$、灰度级为$L$ (通常$L=256$)的灰度图像中,
+灰度值为$i$的像素个数用$n_i$表示, 总的像素个数用$n$表示,
+其中$n=n_0+n_1$ $+$ $\cdots$ $+$ $n_{L-1}$.
+用$p_i$表示灰度图像中灰度值为$i$的像素点出现的概率, 则
+\begin{equation}
+p_i  = \frac{{n_i }}{n}
+\end{equation}
+其中, $\sum_{i = 0}^{L - 1} {p_i }  = 1$.
+
+假设灰度图像由暗背景和亮目标组成, 且背景与目标满足一混合高斯分布, 即
+\begin{equation}
+p(i) = \sum\limits_{j = 0}^1 {P_j \cdot p(i|j)}
+\end{equation}
+其中, $P_0$和$P_1$分别为背景$C_0$和目标$C_1$各自分布的先验概率,
+且$C_0$和$C_1$的各自分布$p(i|j)$均服从均值为$\mu _j$、方差为$\sigma
+_j^2$的正态分布:
+\begin{equation}
+p(i|j) = \frac{1}{{\sqrt {2\pi } \sigma _j }}\exp \left( { -
+\frac{{\left( {i - \mu _j } \right)^2 }}{{2\sigma _j^2 }}} \right)
+\end{equation}
+
+假设$t$为背景$C_0$和目标$C_1$的分割阈值, 即$C_0$ $=$ $\{0, 1,
+\cdots, t\}$, $C_1=\{t+1, t+2, \cdots, L-1\}$.
+则$C_0$和$C_1$各自的先验概率$P_0(t)$和$P_1(t)$分别为
+\begin{equation}
+P_0 (t) = \sum\limits_{i = 0}^t {p_i }
+\end{equation}
+\begin{equation}
+P_1 (t) = \sum\limits_{i = t + 1}^{L - 1} {p_i }
+\end{equation}
+
+\onecolumn\begin{multicols}{2}%这一行用于第一页末尾
+\noindent 其中, $P_0(t)$和$P_1(t)$满足$P_0(t)+P_1(t)=1$.
+
+$C_0$和$C_1$各自分布的均值$\mu_0(t)$和$\mu_1(t)$分别为
+\begin{align}
+\mu _0 (t) = \frac{1}{{P_0 (t)}}\sum\limits_{i = 0}^t {i \cdot p_i }
+=   \frac{1}{P_0 (t)}\mu (t)
+\end{align}
+\begin{align}
+\mu _1 (t) = \frac{1}{{P_1 (t)}}\sum\limits_{i = t + 1}^{L - 1} {i
+\cdot p_i }=  \frac{\mu _T  - \mu (t)}{{P_1 (t)}}
+\end{align}
+其中, $\mu _T  = \sum_{i = 0}^{L - 1} {i \cdot p_i }$, $\mu(t) =
+\sum_{i = 0}^t {i \cdot p_i}$.
+
+$C_0$和$C_1$各自分布的方差$\sigma _0^2 (t)$和$\sigma _1^2 (t)$分别为
+\begin{align}
+\sigma _0^2 (t) =\;& \frac{1}{{P_0 (t)}}\sum\limits_{i = 0}^t {p_i \cdot \left[ {i - \mu _0 (t)} \right]^2 }= \nonumber \\
+& \frac{1}{{P_0 (t)}}\sum\limits_{i = 0}^t {p_i \cdot i^2 }  -
+\left[ {\mu _0 (t)} \right]^2
+\end{align}
+\begin{align}
+\sigma _1^2 (t) =\;& \frac{1}{{P_1 (t)}}\sum\limits_{i = t + 1}^{L - 1} {p_i \cdot \left[ {i - \mu _1 (t)} \right]^2 }  =\nonumber \\
+& \frac{1}{{P_1 (t)}}\sum\limits_{i = t + 1}^{L - 1} {p_i \cdot i^2
+}  - \left[ {\mu _1 (t)} \right]^2
+\end{align}
+
+基于最小分类误差思想, Kittler等得到以下最小误差目标函数$J(t)$:
+\begin{equation}
+J(t) = {P_0 (t)} \cdot \ln \frac{{\sigma _0^2 (t)}}{{\left[ {P_0
+(t)} \right]^2 }} + {P_1 (t)} \cdot \ln \frac{{\sigma _1^2
+(t)}}{{\left[ {P_1 (t)} \right]^2 }}
+\end{equation}
+
+最佳阈值$t^*$在$J(t)$取最小值时获得, 即
+\begin{equation}
+t^*  = \arg\left\{ {\mathop {\min }\limits_{0 \le t \le L - 1} J(t)}
+\right\}
+\end{equation}
+
+用$f(x,y)$表示灰度图像, 则最终二值图像${ bin}(x,y)$可由下式获得:
+\begin{equation}
+{ bin}(x,y) = \left\{ \begin{array}{ll}
+ 0,  & f(x,y) \le t^*  \\
+ 255, & f(x,y) > t^*  \\
+ \end{array} \right.
+\end{equation}
+
+\subsection{{\bf{Water flow}} 模型\,\!$^{[13-14]}$}
+
+Kim等于2002年提出了一种Water flow模型\,\!$^{[13]}$,
+主要用于分割文本等小目标图像. 该模型是将图像曲面看成一个三维地形,
+假设图像由亮背景和暗目标组成, 则图像中的目标将处于山谷位置.
+如图1\,(a)为一幅光照不均的Shadow图像, 图1\,(b)为其三维地形图.
+从图1\,(b)可以看出,
+无法找到一个单一阈值将字符目标从明暗不均的背景中提取出来,
+但可以找到一个曲面将字符与背景完全分开, 即背景曲面. Water
+flow模型正是用来估计此类不均匀光照图像的背景曲面.
+
+
+
+ \vskip3mm
+\begin{center}
+   \begin{minipage}{0.20\textwidth}
+   \centering
+   \subfigure{\includegraphics{1a.eps}}\\
+   {\footnotesize (a) Shadow图像\\(a) Shadow image}
+   \end{minipage}
+   \begin{minipage}{0.20\textwidth}
+   \centering
+   \subfigure{\includegraphics{1b.eps}}\\
+   {\footnotesize (b) 三维曲面图\\(b) 3D surface}
+   \end{minipage}
+   \vskip2mm
+   {\small 图1\quad Shadow图像及其三维曲面图
+\\Fig.\,1\quad The shadow image and its 3D surface}
+\end{center}
+ \vskip3mm
+
+
+Kim等在文献[13]中将目标在地形图中看成池塘, 将背景看成陆地,
+如图1\,(b)所示. Water
+flow模型的基本思想是在三维地形上的每一位置进行降雨操作,
+然后雨水会根据地势高低流入到最邻近的池塘底部进行积水. 通过多次降水,
+直到淹没所有池塘, 操作停止. Kim等用参数$w$来表示降水轮数,
+每一轮降水将对图像中每一个像素点均进行一次降水操作,
+来不断地在近邻池塘进行积水.
+如图2\,(a)所示为Shadow图像经10轮降水操作后估计出的背景图像,
+图2\,(b)为其三维地形图, 从图中可以看出, 地形图中的池塘几乎均已积满了
+水.
+
+ \vskip3mm
+\begin{center}
+   \begin{minipage}{0.22\textwidth}
+   \centering
+   \subfigure{\includegraphics{2a.eps}}\\
+   {\footnotesize (a) 背景图像\\(a) Background image}
+   \end{minipage}
+   \begin{minipage}{0.22\textwidth}
+   \centering
+   \subfigure{\includegraphics{2b.eps}}\\
+   {\footnotesize (b) 三维曲面图\\(b) 3D surface}
+   \end{minipage}
+   \vskip2mm
+   {\small 图2\quad 背景图像及其三维曲面图
+\\Fig.\,2\quad The background image and its 3D surface}
+\end{center}
+ \vskip3mm
+
+由于文献[13]中的每一轮降水是对图像中的所有点进行处理,
+存在大量无用和重复搜索操作, 并且停止条件受人为因素影响很大.
+考虑到边缘是背景和目标的一道分界线, Oh等利用边缘像素点作为种子点,
+提出了一种改进的Water flow模型\,\!$^{[14]}$. 在每一轮降水中,
+改进模型只对种子点进行降水操作, 直到种子点位置被水淹没后, 操作停止.
+Oh等首先利用Sobel算子提取边缘,
+然后采用式(13)得到的阈值对其二值化来得到种子点图像, 如图3所示.
+\begin{equation}
+Th_{\rm gradient}  = 10 \cdot \ln \left( {\left\| {\nabla I(x,y)}
+\right\|_{\rm avg} } \right)
+\end{equation}
+其中, ${\left\| {\nabla I(x,y)} \right\|_{\rm avg}
+}$表示待处理灰度图像$I(x,y)$经Sobel算子检测得到的边缘图像中的梯度均值.
+
+\vskip5mm {\centering \vbox{\centerline{\psfig{figure=3.eps}}
+\vskip2mm {\small 图3\quad 种子点图像 \\
+Fig.\,3\quad Seeds image}}} %\vskip3mm
+
+\section{鲁棒去噪模型}
+
+参照文献[9], 记待处理灰度图像为$f(x,y)$, 其高斯滤波图像记为$g(x,y)$,
+中值滤波图像记为$h(x,y)$, 灰度级均为$L$, 通常$L=256$.
+由此构建了一个三维直方图, 如图4所示.
+
+
+
+\vskip5mm {\centering \vbox{\centerline{\psfig{figure=4.eps}}
+\vskip2mm {\small 图4\quad 三维直方图模型 \\
+Fig.\,4\quad 3D histogram model}}} \vskip5mm
+
+
+理想情况下, 对于一幅未受噪声干扰图像中的任意一点$(x,y)$,
+该点的灰度值$f(x,y)$、均值$g(x,y)$和中值$h(x,y)$ 十分接近,
+因此三维直方图沿其体对角线$OM$方向分布,
+如图5所示为Rice图及其一维和三维直方图. 亦从图可知,
+因受不均匀光照影响, Rice图的一维直方图呈多峰多谷分布,
+显然对于此类图像无法用单阈值算法进行处理.
+
+通常, 在实际应用中待处理图像往往会受噪声干扰. 此时,
+对于同一像素点处的灰度值、均值以及中值会相差很大,
+相应的三维直方图将不再沿体对角线方向分布.
+如图6所示为一受噪声干扰的Rice图及其一维和三维直方图分布情况,
+从图中可以看出, 三维直方图中的点在整个立方体区域内分布比较混乱,
+并不沿对角线方向分布. 另外,
+原先具有明显峰谷特征分布的一维直方图已退化成较为平坦的区域,
+这些分布特征均对后续处理造成极大不便.
+
+针对上述情况, 如果直接基于三维直方图进行处理将会存在大量误分,
+为此需要对其进行矫正处理. 如图7所示为三维直方图八角区域分布图,
+本文对各区域分布情况进行了如下分析:
+
+1) 区域0为背景区域, 区域1为目标区域,
+灰度值、均值和中值三者均不需矫正;
+
+2) 区域2和区域3中的点的均值和中值同时较大或较小,
+而因其灰度值过小或过大, 即该点为一个噪声点, 所以该点灰度值需要矫正;
+
+3) 区域4和区域5中的点的灰度值和中值同时较大或较小,
+而因其均值过小或过大, 即该点附近存在噪声点, 所以该点均值需要矫正;
+
+4) 区域6和区域7中的点的灰度值和均值同时较大或较小,
+而因其中值过小或过大, 即该点附近存在噪声点, 所以该点中值需要矫正.
+
+ \vskip0mm
+\begin{center}
+   \begin{minipage}{0.22\textwidth}
+   \centering
+   \subfigure{\includegraphics{5a.eps}}\\
+   {\footnotesize (a) Rice图像\\(a) Rice image}
+   \end{minipage}
+   \begin{minipage}{0.22\textwidth}
+   \centering
+   \subfigure{\includegraphics{5b.eps}}\\
+   {\footnotesize (b) 一维直方图\\(b) 1D histogram }
+   \end{minipage}\\[2mm]
+   \begin{minipage}{0.40\textwidth}
+   \centering
+   \subfigure{\includegraphics{5c.eps}}\\
+   {\footnotesize (c) 三维直方图\\(c) 3D histogram }
+   \end{minipage}   \vskip2mm
+   {\small 图5\quad Rice图及其一维和三维直方图
+\\Fig.\,5\quad Rice image and its 1D and 3D histograms}
+\end{center}
+ %\vskip3mm
+
+ \vskip0mm
+\begin{center}
+   \begin{minipage}{0.22\textwidth}
+   \centering
+   \subfigure{\includegraphics{6a.eps}}\\
+   {\footnotesize (a) 含噪Rice图像\\(a) Noised rice image }
+   \end{minipage}
+   \begin{minipage}{0.22\textwidth}
+   \centering
+   \subfigure{\includegraphics{6b.eps}}\\
+   {\footnotesize (b) 一维直方图\\(b) 1D histogram }
+   \end{minipage}\\[2mm]
+   \begin{minipage}{0.40\textwidth}
+   \centering
+   \subfigure{\includegraphics{6c.eps}}\\
+   {\footnotesize (c) 三维直方图\\(c) 3D histogram }
+   \end{minipage}   \vskip2mm
+   {\small 图6\quad
+含噪Rice图及其一维和三维直方图
+\\Fig.\,6\quad Noised rice image and its 1D and 3D histograms}
+\end{center}
+ \vskip3mm
+
+
+\vskip3mm {\centering \vbox{\centerline{\psfig{figure=7.eps}}
+\vskip1mm {\small 图7\quad 三维直方图8角区域分布图 \\
+Fig.\,7\quad The eight areas of the 3D histogram}}} \vskip3mm
+
+
+
+
+通过以上分析, 本文得出以下矫正方案:
+
+设某一像素点$(x,y)$处的像素值三元组为$(p_1$, $p_2, p_3)$, 若$p_i$,
+$p_j$和$p_k$满足: $|p_k - p_i| > |p_j - p_i|$且$|p_k - p_j|
+> |p_j - p_i|$, 其中$1 \le i, j, k \le 3$且$i$ $\ne$ $j$ $\ne$ $k$,
+则$p_k$需要矫正, 得:
+\begin{equation}
+p_k  = \frac{1}{2}\left( {p_i  + p_j } \right)
+\end{equation}
+
+
+对于图6\,(a)中受噪声干扰的Rice图, 其矫正后的三维直方图如图8所示.
+从图中可以看出, 跟未受噪声干扰的图像类似,
+矫正后的三维直方图仍沿体对角线方向分布.
+
+
+
+
+\vskip3mm {\centering \vbox{\centerline{\psfig{figure=8.eps}}
+\vskip1mm {\small 图8\quad 对含噪Rice图矫正后的三维直方图 \\
+Fig.\,8\quad Corrected 3D histogram of the noised rice image}}}
+\vskip3mm
+
+\section{鲁棒的最小误差法}
+
+文献[7$-$8]是在整个三维直方图空间中搜索阈值, 其时间复杂度为${\rm
+O}(L^3)$, 因此需要大量的处理时间和存储空间.
+由于三维直方图沿体对角线方向分布,
+且阈值的有效搜索范围仅限于以该对角线为轴心的一个小圆柱体内,
+其他大部分区域的搜索操作均可以忽略. 本文利用三维直方图这一分布特性,
+对其进行了降维处理, 即把三维空间中的点均投影到体对角线上,
+使其阈值搜索的空间维度由三维降低到一维. 即仍以原点$O$为原点,
+以体对角线$OM$为横轴, 以与$OM$垂直的方向为纵轴,
+通过统计投影到$OM$上的点的个数, 从而得到一个新的一维直方图,
+其横轴分布范围为$\left[ {0,\sqrt 3 L} \right)$.
+
+
+如图9所示, 设$T(f,g,h)$为三维直方图中任意一点,
+该点在$OM$上的投影点为$N$, 平面$l$过点$T$和$N$, 且垂直于$OM$,
+延展平面$l$与$f$轴交于点B, 可得$|OB|=f+g+h$.
+
+
+
+
+\vskip3mm {\centering \vbox{\centerline{\psfig{figure=9.eps}}
+\vskip1mm {\small 图9\quad 三维直方图 \\
+Fig.\,9\quad 3D histogram}}} \vskip3mm
+
+
+在Rt$\Delta OAM$中,
+\begin{equation}
+\cos \alpha  = \frac{{\left| {OA} \right|}}{{\left| {OM} \right|}} =
+\frac{{\left| {OA} \right|}}{{\sqrt 3 \left| {OA} \right|}} =
+\frac{{\sqrt 3 }}{3}
+\end{equation}
+
+在Rt$\Delta ONB$中, 点$T$在$OM$上的投影值$|ON|$为
+\begin{equation}
+\left| {ON} \right| = \left| {OB} \right|\cos \alpha  = \frac{{\sqrt
+3 }}{3}\left( {f + g + h} \right)
+\end{equation}
+
+对三维直方图中每一个点分别计算其在$OM$上的投影值,
+最终便可得到一个新的一维直方图, 分布范围为$\left[ {0,\left\lfloor
+{\sqrt 3 L} \right\rfloor } \right]$
+($\lfloor\,\cdot\,\rfloor$表示向下取整函数). 然后基于此一维直方图,
+采用最小误差法\,\!$^{[1]}$即可获得最佳阈值.
+
+对于图6\,(a)中受噪声干扰的Rice图,
+通过降维处理后得到的一维直方图如图10所示. 从图中可以看出,
+新的一维直方图跟未受噪声干扰图像的一维直方图具有相似的分布特征,
+如图5\,(b)所示.
+
+
+\vskip3mm {\centering
+\vbox{\centerline{\psfig{figure=10.eps,width=7.6cm}}
+\vskip1mm {\small 图10\quad 对含噪Rice图矫正后的一维直方图 \\
+Fig.\,10\quad Corrected 1D histogram of the noised rice image}}}
+\vskip3mm
+
+
+\section{自适应最小误差法}
+
+考虑到实际应用中待处理图像是否受到光照的影响,
+本文提出了一种自适应最小误差阈值分割算法. 对于均匀光照下待处理图像,
+直接采用本文提出 的鲁棒最小误差法进行分割;
+而对于受不均匀光照影响的待处理图像, 首先采用Water
+flow模型消除不均匀光照背景, 然后再采用鲁棒最小误差法进行分割操作.
+本算法的具体流程如图11所示.
+
+\vskip3mm {\centering \vbox{\centerline{\psfig{figure=11.eps}}
+\vskip1mm {\small 图11\quad 算法流程图 \\
+Fig.\,11\quad The flowchart of our method}}} \vskip3mm
+
+
+{\hei 步骤} {\bf 1.} 采用上述鲁棒去噪模型进行去噪处理,
+为方便图像显示和后续处理,
+对矫正后的三维直方图采用下式重构出去噪后图像$f'(x,y)$:
+\begin{equation}
+f'(x,y) = \frac{1}{3}\left[ {f(x,y) + g(x,y) + h(x,y)} \right]
+\end{equation}
+
+{\hei 步骤} {\bf 2.} 对去噪图像$f'(x,y)$采用Water
+flow模型估计出其背景图像$B(x,y)$, 如图2\,(a)所示.
+
+{\hei 步骤} {\bf 3.} 利用背景图像与去噪后图像按式(18)做差,
+来消除不均匀光照背景信息, 从而得到仅含目标信息的图像$D(x,y)$,
+如图12\,(a)所示.
+\begin{equation}
+D(x,y) =\left| B(x,y) - f'(x,y)\right|
+\end{equation}
+
+\vskip0mm
+\begin{center}
+   \begin{minipage}{0.22\textwidth}
+   \centering
+   \subfigure{\includegraphics{12a.eps}}\\
+   {\footnotesize (a) 矫正前目标图像\\(a) Object image before
+correcting}
+   \end{minipage}
+   \begin{minipage}{0.22\textwidth}\vskip-4mm
+   \centering
+   \subfigure{\includegraphics{12b.eps}}\\
+   {\footnotesize (b) 矫正后目标图像\\(b) Corrected object image}
+   \end{minipage}
+    \vskip2mm
+   {\small 图12\quad 目标图像
+\\Fig.\,12\quad The foreground images}
+\end{center}
+\vskip0mm
+
+{\hei 步骤} {\bf 4.} 由上一步得到的图像$D(x,y)$中所含目标可能会很暗,
+为此需要 对其进行增强处理, 以突出较暗的目标信息.
+而文献[13$-$14]并没有进行增强处理, 导致
+在全局分割时会丢失大量目标信息. 本文选用$\gamma$
+矫正进行图像增强处理, 如图 13所示为$\gamma$值分别取0.4, 0.5, 0.6,
+0.8和1时的$\gamma$矫正曲线. 图12\,(b)为 采用$\gamma = 0.5$
+对图12\,(a)进行增强后图像, 从图中可以看出对于较暗的目标有了明显增强.
+
+
+{\hei 步骤} {\bf 5.}
+最后采用本文提出的鲁棒最小误差法对上一步得到的增强图像进行全局阈值分割,
+以得到最终二值图像, 如图14所示.
+
+
+
+\vskip3mm {\centering \vbox{\centerline{\psfig{figure=13.eps}}
+\vskip2mm {\small 图13\quad $\gamma$ 曲线 \\
+Fig.\,13\quad $\gamma$ curves}}} %\vskip3mm
+
+\vskip5mm {\centering \vbox{\centerline{\psfig{figure=14.eps}}
+\vskip2mm {\small 图14\quad 二值图像 \\
+Fig.\,14\quad Binary image}}} %\vskip5mm
+
+
+\section{算法时间复杂度对比分析}
+
+本文算法在鲁棒去噪、提取目标和图像增强过程中,
+均需要遍历待处理图像所有像素点, 相应时间复杂度均为${\rm O}(M N)$.
+在采用Water flow模型估计背景时, 其时间复杂度为 ${\rm O} (n M
+N)^{[14]}$, 其中$n$为降雨次数, 与图像中平均目标面积大小成正比.
+在最后一步鲁棒分割阶段, 由于降维操作同样需要遍历图像中所有像素点,
+因此其时间复杂度为 ${\rm O} (M N)$.
+降维后得到的新一维直方图灰度级为$\sqrt 3 L$, 因$L$ $\ll$  $M N$,
+所以鲁棒最小误差法的时间复杂度为${\rm O}(M N$ $+$ $\sqrt 3 L) = {\rm
+O}(M N)$. 综上, 本算法的时间复杂度为 ${\rm O}(M N + n M N + M N + M
+N +M N) = {\rm O} (n M N)$.
+表1分别给出了一维最小误差法\,\!$^{[1]}$、二维最小误差法\,\!$^{[6]}$、三维直
+方图重建和降维方法\,\!$^{[9]}$、FCM方法\,\!$^{[11]}$、
+灰度波动变换方法\,\!$^{[12]}$和本文方法的时间复杂度,
+其中$m$表示FCM方法中的迭代次数. 从表1可知,
+本文方法与FCM方法具有相同的时间复杂度.
+
+\section{实验结果及分析}
+
+仿真实验选用了如下测试环境: CPU为AMD Athlon 7750 Dual-Core
+2.70\,GHz, 2\,G内存, Mic-
+
+\vskip4mm
+\vbox{\centering{\small 表1\quad 各算法时间复杂度\\
+Table 1 \quad Time complexity of different methods} \vskip2mm
+\renewcommand{\baselinestretch}{1.35}
+{\footnotesize\centerline{\tabcolsep=25pt\begin{tabular}{cccccccccccc}
+\toprule
+分割方法                           &时间复杂度\\
+\hline
+一维最小误差法\,\!$^{[1]}$             & ${\rm O}(L)$     \\
+二维最小误差法\,\!$^{[6]}$             & ${\rm O}(L^2)$   \\
+三维直方图重建和降维方法\,\!$^{[9]}$   & ${\rm O}(L)$     \\
+FCM方法\,\!$^{[11]}$                   & ${\rm O}(m M N)$ \\
+灰度波动变换方法\,\!$^{[12]}$          & ${\rm O}(M N)$   \\
+本文方法                           & ${\rm O}(n M N)$ \\
+\bottomrule
+\end{tabular}}}\vskip0mm}\vskip3mm
+
+\noindent rosoft VS2008 VC++编程环境. 本实验分为两组,
+一组是均匀光照下图像分割测试;
+另一组是非均匀光照下文本图像和非文本小目标图像分割测试,
+其中包括抗噪性能测试和$\gamma$参数敏感性测试. 此外,
+本文选用误分率(Misclassification error, ME)作为测试标准,
+它是现今使用较多的一种图像分割性能测试标准\,\!$^{[4]}$.
+ME值反映了背景像素被错误划分到前景区域的比例,
+或者是前景像素被错误划分到背景区域的比例, 计算式如下:
+\begin{equation}
+ME = 1 - \frac{{\left| {B_O  \cap B_T } \right| + \left| {F_O  \cap
+F_T } \right|}}{{\left| {B_O } \right| + \left| {F_O } \right|}}
+\end{equation}
+其中, $B_O$与$F_O$指标准二值掩码(Ground truth)图像中的背景与前景,
+是由研究者经观察人工制作而成, $B_T$与$F_T$为分割结果中的背景与前景,
+$\cap$为取交操作, $\left| \cdot \right|$用以统计各部分像素点个数.
+ME值主要用于衡量分割结果与标准二值掩码图像的差值,
+该值越低分割效果越好.
+
+
+\subsection{均匀光照条件下分割结果}
+
+如图15所示为均匀光照条件下含混合噪声($N(10,20^2)$的高斯噪声和$3\,\%$的椒盐噪声)乒乓球图像的分割结果,
+图像大小为800像素 $\times$ 600像素. 其中, 图
+15\,(b)为其标准二值掩码图, 图15\,(c)\,$\sim$
+15\,(h)分别为采用一维最小误差法\,\!$^{[1]}$、二维最小误差法\,\!$^{[6]}$、FCM方法\,\!$^{[11]}$、
+灰度波动变换方法\,\!$^{[12]}$、三维直方图重建和降维方法\,\!$^{[9]}$和本文方法的分割结果.
+实验中, FCM方法中的$\alpha = 0.1$,
+灰度波动变换方法中的波动阈值取为$T = 130$,
+均是通过多次实验获取的最佳参数值. 从图中可以看出,
+一维和二维最小误差法的分割结果中含有大量噪声,
+其主要原因是这两种方法没有充分利用图像邻域信息.
+FCM方法虽然利用了邻域均值信息, 但其抗噪性能仍很差, 同时运行时间较长.
+灰度波动变换方法分割结果比较理想, 但处理时间较长.
+三维直方图重建和降维方法和本文方法因充分利用邻域均值和中值信息,同时采用了全局分割策略,
+因此其分割结果无论在ME值和处理时间上均非常优秀, 见表2所示.
+从表中可看出, 相对于其他5种方法, 本文方法的整体分割性能明显最佳.
+
+
+\subsection{非均匀光照条件下分割结果}
+
+如图16\,(a1)\,$\sim$\,16\,(g1)所示为非均匀光照条件下7幅不同大小待测试文本图像.
+Text\,1和Text\,2两幅图像大小均为800像素 $\times$ 600像素,
+其余图像大小依次为793像素 $\times$ 596像素、954像素 $\times$
+716像素、894像素 $\times$ 680像素、786像素 $\times$ 586像素和784像素
+$\times$ 586像素 .
+图16\,(a2)\,$\sim$\,16\,(g2)为对应的7幅标准二值掩码图像.
+如图17所示为分别采用二维最小误差法\,\!$^{[6]}$、三维直方图重建和降维方法\,\!$^{[9]}$、灰
+度波动变换方法\,\!$^{[12]}$、FCM方法\,\!$^{[11]}$和本文方法的分割结果.
+实验中, 灰度波动变换方法中波动
+
+\end{multicols}%开始通栏显示
+ \vspace {-3mm}
+\begin{center}
+   \begin{minipage}{0.22\textwidth}
+   \centering
+   \subfigure{\includegraphics{15a.eps}}\\
+   {\footnotesize (a) 乒乓球图像\\(a) Ping-pong image }
+   \end{minipage}
+   \begin{minipage}{0.22\textwidth}
+   \centering
+   \subfigure{\includegraphics{15b.eps}}\\
+   {\footnotesize (b) 二值掩码图\\(b) Ground truth image}
+   \end{minipage}
+   \begin{minipage}{0.22\textwidth}
+   \centering
+   \subfigure{\includegraphics{15c.eps}}\\
+   {\footnotesize (c) 一维最小误差法\\(c) 1D MinError method}
+   \end{minipage}
+   \begin{minipage}{0.22\textwidth}
+   \centering
+   \subfigure{\includegraphics{15d.eps}}\\
+   {\footnotesize (d) 二维最小误差法\\(d) 2D MinError method}
+   \end{minipage}\\[3mm]
+   \begin{minipage}{0.22\textwidth}\vskip -9mm
+   \centering
+   \subfigure{\includegraphics{15e.eps}}\\
+   {\footnotesize (e) FCM方法\\(e) FCM method }
+   \end{minipage}
+   \begin{minipage}{0.22\textwidth}\vskip -9mm
+   \centering
+   \subfigure{\includegraphics{15f.eps}}\\
+   {\footnotesize (f) 灰度波动变换方法\\(f) Gray wave method}
+   \end{minipage}
+   \begin{minipage}{0.22\textwidth}
+   \centering
+   \subfigure{\includegraphics{15g.eps}}\\
+   {\footnotesize (g) 三维直方图重建和降维方法\\(g) 3D histogram rebuilding and dimensionality reduction Otsu method}
+   \end{minipage}
+   \begin{minipage}{0.22\textwidth}\vskip -9mm
+   \centering
+   \subfigure{\includegraphics{15h.eps}}\\
+   {\footnotesize (h) 本文方法\\(h) Our method }
+   \end{minipage}
+   \vskip1mm
+   {\small 图15\quad 乒乓球图像分割结果
+\\Fig.\,15\quad Thresholding results of the ping-pong image}
+\end{center}
+
+
+
+
+
+\vskip5mm {\centering \vbox{\centerline{\psfig{figure=16.eps}}
+\vskip2mm {\small 图16\quad 原始文本图像及其标准二值掩码图像
+\\Fig.\,16\quad Source document images and their ground truth images}}} \vskip5mm
+
+
+
+\vskip0mm {\centering \vbox{\centerline{\psfig{figure=17.eps}}
+\vskip0mm {\small 图17\quad 非均匀光照文本图像的分割结果
+\\Fig.\,17\quad Thresholding results of uneven illumination document images}}} \vskip5mm
+
+
+\begin{multicols}{2}%开始2栏显示
+
+
+\noindent 阈值$T = 50$, FCM方法中参数$\alpha = 0.5$, 本文算法中
+$\gamma = 0.7$, 均是通过统计实验得到的最佳参数. 从实验结果可知,
+由于受不均匀光照的干扰,
+对于全局算法的二维最小误差法和三维直方图重建和降维方法其分割结果明显较差,
+具有较大的ME值, 如表3所示. 相对于前两种全局方法,
+虽然FCM方法和灰度波动变换方法的分割结果较为理想,
+但仍存在着部分目标的误分割. 而本文方法的分割结果最为理想,
+其误分率整体较小, 见表2所示. 另外,
+本算法处理时间除了与图像大小相关外, 还与目标面积大小有关.
+从图16和表2可知,
+由于Text\,4\,$\sim$\,Text\,6三副文本图像中的字符目标面积相对较大,
+使得在估计背景过程中, 需要大量降雨才能将字符目标所对应的池塘积满水,
+因此增加了算法处理时间. 而对于另外几幅小目标图像,
+只需少量降雨即可完成背景估计操作, 因此处理时间较短.
+
+\subsection{非均匀光照下噪声对本算法分割性能的影响}
+
+如图18所示为对含混合噪声(${\rm
+N}(20,20^2)$的高斯噪声和$5\,\%$的椒盐噪声) Rice图分别采用二维最小误
+差法\,\!$^{[6]}$、FCM方法\,\!$^{[11]}$、三维直方图重建和降维方法\,\!$^{[9]}$、
+灰度波动变换方法\,\!$^{[12]}$和本文方法的分割结果. 其中,
+FCM方法中参数$\alpha = 0.5$, 灰度波动变换方法中波动阈值$T = 80$,
+本文算法中$\gamma = 0.7$. 从实验结果可知,
+二维最小误差法、FCM方法和灰度波动变换方法抗噪性能均较弱,
+分割结果并不理想. 三维直方图重建和降维方法虽然抗噪性较好,
+但由于是全局方法, 导致丢失了部分目标信息, 分割结果仍不理想.
+而本文方法的分割结果最为理想, 具有较小的ME值, 见表4所示.
+
+\subsection{参数~${\pmb \gamma}$~对本文算法分割性能的影响}
+
+为验证本算法对参数$\gamma$的敏感性,
+以及确定出$\gamma$~\,取值的一个有效范围,
+本文对15幅非均匀光照下文本图像和5幅非均匀光照下非文本小目标图像进行了统计测试.
+本文首先在$[0.1, ~1.0]$区间内按步长$\delta$ $=$
+$0.05$对$\gamma$取值, 来统计相应20幅非均匀光照图像的平均ME值.
+通过统计实验发现, 当$\gamma = 0.7$时取得最小ME值.
+为进一步比较准确地确定出一个有效的$\gamma$取值范围, 本文接着在$[0.1,
+~1.0]$区间内按步长\,$\delta = 0.0125$\,对\,$\gamma$\,取值,
+再次进行统计实验.\!\hfill 通过
+
+\end{multicols}%开始通栏显示
+
+
+\vskip0mm
+\vbox{\centering{\small 表2\quad 乒乓球图像各算法的ME值和耗时对比\\
+Table 2 \quad Comparison of ME values and consuming time using
+several methods for the ping-pong image} \vskip2mm
+\renewcommand{\baselinestretch}{1.35}
+{\footnotesize\centerline{\tabcolsep=9.0pt\begin{tabular}{cccccccccccc}
+\toprule
+        &一维最小误差法    &二维最小误差法    &FCM方法    &灰度波动变换方法    &三维直方图重建和降维方法    &本文方法\\
+\hline
+ ME值   &0.018777          &0.017273          &0.346185   &0.003029            &0.003012                    &{\bf{0.001792}}\\
+ 耗时(ms)   &15              &31              &1\,672     &875               &16                      &16 \\
+\bottomrule
+\end{tabular}}}}
+
+
+
+
+\vskip5mm
+\vbox{\centering{\small 表3\quad 非均匀光照下文本图像各算法的ME值和耗时对比\\
+Table 3 \quad Comparison of ME values and consuming time using
+several methods for uneven illumination document images} \vskip2mm
+\renewcommand{\baselinestretch}{1.35}
+{\footnotesize\centerline{\tabcolsep=9.5pt\begin{tabular}{cccccccccccc}
+\toprule
+             &二维最小误差法  &三维直方图重建和降维方法     &灰度波动变换方法     &FCM方法       &本文方法\\
+\hline
+Text\,1        &0.637383/31\,ms   &0.128715/16\,ms   &0.107960/922\,ms   &0.033560/1\,813\,ms   &{\bf{0.019175}}/1\,203\,ms\\
+Text\,2        &0.635950/31\,ms   &0.082358/15\,ms   &0.036669/938\,ms   &0.032548/2\,406\,ms   &{\bf{0.017329}}/1\,312\,ms\\
+Text\,3        &0.671132/31\,ms   &0.359991/15\,ms   &0.054030/968\,ms   &0.115694/1\,625\,ms   &{\bf{0.018255}}/1\,922\,ms\\
+Text\,4        &0.483887/31\,ms   &0.204830/31\,ms   &0.020657/1\,344\,ms  &0.024734/1\,578\,ms   &{\bf{0.021023}}/2\,984\,ms\\
+Text\,5        &0.675130/31\,ms   &0.056006/16\,ms   &0.106006/1\,188\,ms  &0.036635/1\,829\,ms   &{\bf{0.016371}}/3\,391\,ms\\
+Text\,6        &0.510436/31\,ms   &0.381104/15\,ms   &0.042035/891\,ms   &0.055611/1\,562\,ms   &{\bf{0.022467}}/2\,438\,ms\\
+Text\,7        &0.308676/31\,ms   &0.236505/16\,ms   &0.096382/891\,ms   &0.102147/1\,875\,ms   &{\bf{0.031289}}/1\,688\,ms\\
+\bottomrule
+\end{tabular}}}}
+
+
+
+\vskip5mm
+\vbox{\centering{\small 表4\quad Rice图像各算法的ME值和耗时对比\\
+Table 4 \quad Comparison of ME values and consuming time using
+several methods for the noised rice image} \vskip2mm
+\renewcommand{\baselinestretch}{1.35}
+{\footnotesize\centerline{\tabcolsep=15.0pt\begin{tabular}{cccccccccccc}
+\toprule
+         &二维最小误差法  &FCM方法  &三维直方图重建和降维方法  &灰度波动变换方法  &本文方法\\
+\hline
+ME值     &0.078568        &0.329453 &0.069489                  &0.054123          &{\bf{0.036758}}\\
+耗时(ms)     &30           &63    &16                      &125             &687\\
+\bottomrule
+\end{tabular}}}}
+
+
+
+
+
+
+\vskip3mm {\centering \vbox{\centerline{\psfig{figure=18.eps}}
+\vskip0mm {\small 图18\quad 含噪Rice图像分割结果
+\\Fig.\,18\quad Thresholding results of the noised rice image}}} \vskip0mm
+
+\begin{multicols}{2}%开始2栏显示
+
+
+\noindent 统计得出, 参数$\gamma$取值的一个有效范围为$[0.6$, $0.75]$,
+其中当$\gamma = 0.7$时取得最小ME值. 如图19
+所示为参数$\gamma$在$[0.1, 1.0]$区间内按步长$\delta =
+0.05$取值时的统计结果, 其中在区间$[0.5875,~
+0.7625]$内给出了参数$\gamma$按步长$\delta = 0.0125$取值的统计结果.
+从统计实验发现, 在$[0.6, 0.75]$范围内各点相对于$\gamma$ $=$
+$0.7$的相对ME值误差均小于0.002,
+因此可选取该区间作为一个有效的$\gamma$取值范围. 只要在此区域内取值,
+本算法对参数$\gamma$的敏感性将会很低. 其中,
+表5给出了参数$\gamma$部分取值下对应的ME值.
+从图13中的$\gamma$曲线的变化趋势可以对本统计实验做进一步解释:
+当$\gamma$偏向0方向取较小值时,
+在执行$\gamma$矫正操作时会对大量的噪声、背景等非目标信息进行增强,
+导致大量的误分割; 而当$\gamma$偏向1方向取值时,
+因$\gamma$值较大使得部分较暗目标得不到有效增强, 以致目标信息的丢失.
+
+
+\section{结论}
+本文针对二维最小误差法没有充分利用图像局部信息这一问题,
+对其进行了三维推广, 并结合三维直方图重建和降维思想,
+提出了一种鲁棒的最小误差算法.
+本文提出的全局方法不仅能够降低噪声对待分割图像的干扰,
+而且具有较低的时间复杂度, 执行效率很高. 由于该方法为全局方法,
+仅限于对均匀光照条件下的图像进行处理, 为此本文利用Water
+flow模型来估计非均匀光照条件下图像背景,
+以此来降低非均匀光照对分割的影响,
+最后再采用本文提出的鲁棒最小误差法进行全局分割. 通过实验表明,
+无论均匀光照条件还是部分非均匀光照条件下的待处理图像,
+本文提出的自适应最小误差阈值分割算法均取得了优秀的分割效果. 另外,
+还可将本文自适应分割思想应用到其他经典全局方法如Otsu法、最大熵法等.
+
+
+\vskip2mm {\centering \vbox{\centerline{\psfig{figure=19.eps}}
+\vskip2mm {\small 图19\quad 不同参数$\gamma$下ME值的统计结果 \\
+Fig.\,19\quad Statistical result of ME value for different
+$\gamma$}}} %\vskip5mm
+
+
+\vskip3.4mm
+\vbox{\centering{\small 表5\quad 部分参数$\gamma$值下的ME值\\
+Table 5 \quad ME values for different $\gamma$} \vskip2mm
+\renewcommand{\baselinestretch}{1.35}
+{\footnotesize\centerline{\tabcolsep=44.0pt\begin{tabular}{cccccccccccc}
+\toprule
+$\gamma$   &ME值    \\
+\hline
+0.5875     &0.025668\\
+0.6        &0.024206\\
+0.7        &0.022854\\
+0.75       &0.024402\\
+0.7625     &0.025687\\
+\bottomrule
+\end{tabular}}}}\vskip2mm
+
+当然, 本文算法在对均匀光照下图像处理时对图像并没有要求,
+但在对非均匀光照下图像进行处理时,
+仅限于对文本、米粒等小目标图像的处理, 而 对大目标图像将无法处理.
+这是由于当目标区域过大时, 利用Water
+flow模型进行降雨操作时需要频繁地多次降雨, 大大地降低了执行效率,
+同时还会造成一定程度的误分割. 因此,
+为使本文算法能对非均匀光照下大目标图像也能高效处理,
+仍需要进一步探讨与研究.
+
+
+
+\begin{thebibliography}{99}
+\zihao{6} \addtolength{\itemsep}{-0.0em} \urlstyle{rm}
+
+\bibitem{1} Kittler J, Illingworth J. Minimum error thresholding. \textsl{Pattern Recognition}, 1986, \textbf{19}(1): 41$-$47
+
+\bibitem{2} Otsu N. A threshold selection method from gray-level histograms. \textsl{IEEE Transactions on Systems, Man, and Cybernetics}, 1979, \textbf{9}(1): 62$-$66
+
+\bibitem{3} Kapur J N, Sahoo P K, Wong A K C. A new method for gray-level picture thresholding using the entropy of the histogram. \textsl{Computer Vision, Graphics, and Image Processing}, 1985, \textbf{29}(3): 273$-$285
+
+\bibitem{4} Sezgin M, Sankur B. Survey over image thresholding techniques and quantitative performance evaluation. \textsl{Journal of Electronic Imaging}, 2004, \textbf{13}(1): 146$-$168
+
+\bibitem{5} Fan J L, Xie W X. Minimum error thresholding: a note. \textsl{Pattern Recognition Letters}, 1997, \textbf{18}(8): 705$-$709
+
+\bibitem{6} Fan Jiu-Lun, Lei Bo. Two-dimensional extension of minimum error threshold segmentation method for gray-level images. \textsl{Acta Automatica Sinica}, 2009, \textbf{35}(4): 386$-$393 \\
+(范九伦, 雷博. 灰度图像最小误差阈值分割法的二维推广. 自动化学报,
+2009, \textbf{35}(4): 386$-$393)
+
+\bibitem{7} Jing Xiao-Jun, Li Jian-Feng, Liu Yu-Lin. Image segmentation based on 3-D maximum between-cluster variance. \textsl{Acta Electronica Sinica}, 2003, \textbf{31}(9): 1281$-$1285 \\
+(景晓军, 李剑锋, 刘郁林. 一种基于三维最大类间方差的图像分割算法.
+电子学报, 2003, \textbf{31}(9): 1281$-$1285)
+
+\bibitem{8} Fan Jiu-Lun, Zhao Feng, Zhang Xue-Feng. Recursive algorithm for three-dimensional Otsu$'$s thresholding segmentation method. \textsl{Acta Electronica Sinica}, 2007, \textbf{35}(7): 1398$-$1402 \\
+(范九伦, 赵凤, 张雪峰. 三维Otsu阈值分割方法的递推算法. 电子学报,
+2007, \textbf{35}(7): 1398$-$1402)
+
+\bibitem{9} Shen Xuan-Jing, Long Jian-Wu, Chen Hai-Peng, Wei Wei. Otsu thresholding algorithm based on rebuilding and dimension reduction of the 3-dimensional histogram. \textsl{Acta Electronica Sinica}, 2011, \textbf{39}(5): 1108$-$1114 \\
+(申铉京, 龙建武, 陈海鹏, 魏巍.
+三维直方图重建和降维的Otsu阈值分割算法. 电子学报, 2011,
+\textbf{39}(5): 1108$-$1114)
+
+\bibitem{10} Krinidis S, Chatzis V. A robust fuzzy local information C-means clustering algorithm. \textsl{IEEE Transactions on Image Processing}, 2010, \textbf{19}(5): 1328$-$1337
+
+\bibitem{11} Ma L, Staunton R C. A modified fuzzy C-means image segmentation algorithm for use with uneven illumination patterns. \textsl{Pattern Recognition}, 2007, \textbf{40}(11): 3005$-$3011
+
+\bibitem{12} Wei Wei, Shen Xuan-Jing, Qian Qing-Ji. An adaptive thresholding algorithm based on grayscale wave transformation for industrial inspection images.
+\textsl{Acta Automatica Sinica}, 2011, \textbf{37}(8): 944$-$953 \\
+(魏巍, 申铉京, 千庆姬. 工业检测图像灰度波动变换自适应阈值分割算法.
+自动化学报, 2011, \textbf{37}(8): 944$-$953)
+
+\bibitem{13} Kim I K, Jung D W, Park R H. Document image binarization based on topographic analysis using a water flow model. \textsl{Pattern Recognition}, 2002, \textbf{35}(1): 265$-$277
+
+\bibitem{14} Oh H H, Lim K T, Chien S I. An improved binarization algorithm based on a water flow model for document image with inhomogeneous backgrounds. \textsl{Pattern Recognition}, 2005, \textbf{38}(12): 2612$-$2625
+\end{thebibliography}
+\begin{biography}[LJW.eps]
+\noindent{\hei 龙建武 }\quad 吉林大学计算机科学与技术学院博士研究生.
+2011年获吉林大学计算机科学与技术学院硕士学位.
+主要研究方向为图像处理, 计算机视觉与模式识别. E-mail:
+longjw11@mails.jlu.edu.cn
+
+\noindent({\bf LONG Jian-Wu }\quad Ph.\,D. candidate at the College
+of Computer Science and Technology, Jilin University. He received
+his master degree from Jilin University in 2011. His research
+interest covers image processing, computer vision, and pattern
+recognition.)
+\end{biography}
+
+\begin{biography}[SXJ.eps]
+\noindent{\hei 申铉京}\quad 吉林大学计算机科学与技术学院教授.
+1990年获哈尔滨工业大学计算机科学与工程系博士学位.
+主要研究方向为多媒体技术, 计算机图像处理, 智能测量系统,
+光电混合系统.
+\\E-mail: xjshen@jlu.edu.cn
+
+\noindent({\bf SHEN Xuan-Jing}\quad Professor at the College of
+Computer Science and Technology, Jilin University. He received his
+Ph.\,D. degree from Harbin Institute of Technology in 1990. His
+research interest covers multimedia technology, computer image
+processing, intelligent measurement system, and optical-electronic
+hybrid system.)
+\end{biography}
+
+\begin{biography}[CHP.eps]
+\noindent{\hei 陈海鹏 }\quad 博士, 吉林大学计算机科学与技术学院讲师.
+主要研究方向为图像处理与模式识别. 本文通信作者.\\E-mail:
+chenhp@jlu.edu.cn
+
+\noindent({\bf CHEN Hai-Peng }\quad Ph.\,D., lecturer at the College
+of Computer Science and Technology, Jilin University. His research
+interest covers image processing and pattern recognition.
+Corresponding author of this paper.)
+\end{biography}
+
+\end{multicols}
+\end{document}

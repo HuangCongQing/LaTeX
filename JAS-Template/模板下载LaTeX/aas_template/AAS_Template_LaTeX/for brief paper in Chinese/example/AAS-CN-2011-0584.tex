@@ -1,0 +1,739 @@
+\documentclass{aas}
+\usepackage{multicol}
+\usepackage{psfig}
+\usepackage{subfigure}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{ccaption}
+\usepackage{booktabs} % 做三线表的上下两条粗线用
+
+\setcounter{page}{1218}
+
+\begin{document}
+
+\cntitle{{\hei \!\!\!\!\!\!基于谱投影梯度追踪的压缩\\\vskip0.2
+\baselineskip ~~~~~~感知重建算法 }
+\thanks{
+收稿日期\ 2011-07-11 \quad 录用日期\ 2012-04-28 }
+\thanks{
+Manuscript received July 11, 2011; accepted April 28, 2012 }
+\thanks{
+中央高校基本科研业务费专项资金(2009YJS003, 2011JBM003),
+教育部高等学校博士学科点科研基金(20110009110001),中
+国博士后科学基金(201104
+90286),北京市属高等学校人才强教计划资助项目(PHR(IHLB))资助 }
+\thanks{
+Supported by the Fundamental Research Funds for the Central
+Universities (2009YJS003, 2011JBM003), National Research Foundation
+for the Doctoral Program of Ministry of Education of China
+(20110009110001), China Postdoctoral Science Foundation (2011049
+0286), and Funding Project for Academic Human Resources Development
+in Institutions of Higher Learning under the Jurisdiction of Beijing
+Municipality (PHR(IHLB)) }
+
+\thanks{本文责任编委\ 于海斌}
+\thanks{Recommended by Associate Editor YU Hai-Bin}
+
+\thanks{
+1. 北京交通大学电子信息工程学院\ 北京\ 100044 }
+\thanks{
+1. School of Electronics and Information Engineering, Beijing
+Jiaotong University, Beijing 100044 }
+
+\cnauthor{ 李志林$^{\scriptscriptstyle 1}$ \hspace{1em}
+陈后金$^{\scriptscriptstyle1}$ \hspace{1em} 姚\
+畅$^{\scriptscriptstyle1}$ \hspace{1em}
+李居朋$^{\scriptscriptstyle1}$ } }
+
+\cnabstract{为了改进方向追踪法的重建精度和算法效率,
+提出了一种基于谱投影梯度(Spectral projected gradient,
+SPG)追踪的压缩感知(Compressed sensing, CS) 重建算法.
+该算法采用方向追踪法框架, 运用谱投影梯度方法计算更新方向和步长,
+引进非单调线性搜索策略使算法避免收敛至局部最优解.
+实验结果证明了该算法的有效性,
+通过设定合适的阈值参数可以取得重建精度和算法效率之间的平衡.}
+\cnkeyword{压缩感知, 信号重建, 谱投影梯度, 方向追踪}
+\doi{10.3724/SP.J.1004.2012.01218}
+
+\entitle{ Compressed Sensing Reconstruction\\\vskip0.3 \baselineskip
+Algorithm Based on Spectral Projected \\\vskip0.2 \baselineskip
+Gradient Pursuit } \enauthor{ LI Zhi-Lin$^{1}$ \hspace{1em}\ CHEN
+Hou-Jin$^1$ \hspace{1em}\ YAO Chang$^1$
+\\\small
+LI Ju-Peng$^{1}$ }
+
+\enabstract{In order to improve the reconstruction accuracy and
+efficiency of the directional pursuit algorithm, a compressed
+sensing (CS) reconstruction algorithm based on spectral projected
+gradient (SPG) pursuit is proposed. Directional pursuit frame is
+adopted by this algorithm. The update direction and step length are
+computed by spectral projected gradient method. Local optimal is
+avoided by adopting the nonmonotone line search strategy. The
+validity of the proposed algorithm was proved by the experimental
+results. The balance between reconstruction accuracy and efficiency
+of the algorithm can be achieved by setting an appropriate threshold
+parameter.} \enkeyword{Compressed sensing (CS), signal
+reconstruction, spectral projected gradient (SPG), directional
+pursuit}
+
+
+\cnaddress{李志林, 陈后金,姚畅,李居朋.
+基于谱投影梯度追踪的压缩感知重建算法. 自动化学报, 2012,
+\textbf{38}(7): 1218$-$1223}
+
+\enaddress{Li Zhi-Lin, Chen Hou-Jin, Yao Chang, Li Ju-Peng.
+Compressed sensing reconstruction algorithm based on spectral
+projected gradient pursuit. \textsl{Acta Automatica Sinica}, 2012,
+\textbf{38}(7): 1218$-$1223} \maketitle
+
+\pagestyle{aasheadings}
+
+%这一章为引言,无需写标题.
+
+信号重建是压缩感知(Compressed sensing,
+CS)理论\!\,$^{[1-2]}$的核心问题, 是指由长度为$M$的观测向量${\pmb y}$
+重建出长度为${N\;(M\ll N)}$的信号${\pmb x}$的过程.
+类似的问题可以通过求解最小${l}_{0}$ 范数进行求解,
+但是直接求解非常困难. 因此研究人员提出了求解次最优解的可行方法,
+如基于贪婪迭代的匹配追踪(Matching pursuit, MP)算法\!\,$^{[3]}$.
+在MP算法的基础上, 学者们又相继提出了正交匹配追踪 (Orthogonal
+matching pursuit,
+OMP)算法\!\,$^{[4]}$和分段正交匹配追踪
+ (Stagewise orthogonal matching pursuit, StOMP)
+算法\!\,$^{[5]}$等. OMP算法延续了MP算法的原子选择准则,
+在原子被选中后将已选择原子进行正交化, 以保证每次迭代结果的最优化,
+提高了重建精度. 与MP算法和OMP算法每次只选择一个原子不同,
+StOMP算法将迭代分成几个阶段, 每次迭代都会选择满足阈值条件的一组原子,
+因此算法速度得到了很大的提高. 但是在处理大尺度信号时,
+传统的MP类算法仍然需要耗费大量存储量和计算时间.
+针对传统MP类算法在处理大尺度信号时遇到的困难,
+Blumensath等在传统MP类算法的基础上,
+结合方向优化提出了方向追踪的方法\!\,$^{[6]}$. 在文献[6]中,
+Blumensath等讨论了三种可供选择的方向追踪法: 梯度追踪(Gradient
+pursuit)、 共轭梯度追踪(Conjugate gradient pursuit,
+CGP)和近似共轭梯度追踪(Approximate conjugate gradient pursuit,
+ACGP). 其中ACGP算法优于其他两种算法, 具有更好的性能. 在之后的研究中,
+Blumensath等优化了原子选择准则,
+提出了分段弱阈值共轭梯度追踪(Stagewise weak conjugate gradient
+pursuit, SWCGP)算法\!\,$^{[7]}$. 通过设置适当的弱化参数,
+每次迭代时选择多个符合阈值条件的原子,
+使得SWCGP算法相比ACGP算法减少了循环次数从而能够更快速地重建信号.
+Blumensath等提出的方向追踪法是对MP类算法的有效扩展,
+但是其重建精度仍然不够理想,
+具有更高重建精度的方向追踪算法值得研究人员进一步探索.
+
+针对Blumensath等提出的方向追踪法重建精度不高的问题,
+本文提出了一种新的方向追踪算法. 该算法采用非单调线性搜索策略,
+通过谱投影梯度(Spectral projected gradient,
+SPG)方法\!\,$^{[8]}$计算更新方向和步长,
+本文将该算法称为谱投影梯度追踪(Spectral projected gradient pursuit,
+SPGP)算法. 在后面的章节中, 本文将首先简要介绍传统MP算法和CGP算法,
+然后详细介绍本文所提出的SPGP算法的原理及其算法性能,
+最后将本文算法与已有经典算法应用到实际的压缩感知重建问题中进行比较实验.
+
+
+\section{传统匹配追踪算法}
+
+考虑$N\times 1$的一维列信号${\pmb x}$,如果${\pmb x}$中只有$K\;(K\ll
+N)$个元素不为$0$, 称信号${\pmb x}$是稀疏的,并且其稀疏度为$K$.
+为了获得采样信号,需要设计一个$M\times N$ $(M\ll
+N)$维的随机测量矩阵${\Phi}$,随机测量矩阵${\Phi}$的列向量${\pmb
+\phi}_{i}$ $(i=1,2,\cdots,N)$称为原子. 根据CS理论,
+通过式(1)将稀疏信号在随机测量矩阵${\Phi}$上进行投影,
+得到一个比原始信号长度小得多的$M\times 1$维的观测向量${\pmb y}$.
+%公式1
+\begin{equation}
+\pmb y=\Phi \pmb x
+\end{equation}
+CS重建算法就是研究在给定观测向量${\pmb
+y}$和随机测量矩阵${\Phi}$的情况下, 如何重建出原始的稀疏信号${\pmb
+x}$.
+
+基于贪婪迭代的MP类算法是目前应用广泛的一类CS重建算法,
+该类算法的核心思想是在第$n$次迭代中从过完备原子库(即随机测量矩阵${\Phi}$)里选择与观测信号余量${\pmb
+r}$ (初始化为观测信号${\pmb y}$)最匹配的原子.
+%公式2
+\begin{align}
+{I}^{n}=\arg \max\limits_{i=1,2,\cdots,N} \langle {{\pmb
+r}^{n-1},{\pmb \phi}_{i}} \rangle
+\end{align}
+式(2)中的尖括号表示向量的内积, 如${\langle {{\pmb a}, {\pmb b}}
+\rangle={\pmb a}^{\rm T} {\pmb b}}$,~~${{\pmb a}^{\rm
+T}}$表示向量${\pmb a}$的转置.
+将选出的原子增加至候选子集${\Gamma}$中形成新的候选子集.
+%公式3
+\begin{equation}
+{\Gamma}^{n}={\Gamma}^{n-1} \cup {I}^{n}
+\end{equation}
+根据候选子集,
+通过求解最小二乘得到原始信号的估计信号和新的观测信号余量.
+%公式4
+\begin{align}
+\hat{\pmb x}^{n}=&\ \arg \min\limits_{\pmb x}{\|\pmb y -
+{\Phi}_{{\Gamma}^{n}}\pmb x\|}_{2}
+\\
+{\pmb r}^{n}=&\ \pmb y-{\Phi}_{{\Gamma}^{n}}{\hat{\pmb x}^{n}}
+\end{align}
+在下一次迭代中,
+继续选择与观测信号余量最匹配的原子形成新的候选子集,用以计算${\hat{\pmb
+x}}$和${\pmb r}$直至迭代结束.
+
+\section{共轭梯度追踪法}
+在继承传统MP类算法思想的基础上, Blumensath等引入更新方向${\pmb
+d}$和步长${\alpha}$, 采用方向追踪的方法来计算${\hat{\pmb
+x}}$和${\pmb r}$.
+%公式6
+\begin{align}
+\hat{\pmb x}^{n}=&\ \hat{\pmb x}^{n-1}+{\alpha}^{n} {\pmb
+d}_{{\Gamma}^{n}}
+\\
+{\pmb r}^{n}=&\ {\pmb
+r}^{n-1}-{{\alpha}^{n}}{{\Phi}_{{\Gamma}^{n}}}{{\pmb
+d}_{{\Gamma}^{n}}}
+\end{align}
+Blumensath等在文献[6$-$7]中所提出的算法如ACGP, SWCGP等虽然不尽相同,
+但是更新方向都是采用共轭梯度方向,
+因此本文将这类算法统称为CGP算法,该类算法的流程如下:
+
+{\hei 步骤} {\bf 1.} 初始化: ${{\hat{\pmb x}}^{0}=\pmb 0}$, ${{\pmb
+r}^{0}=\pmb y}$, ${\Gamma}^{0}=\emptyset$, $n=1$.
+
+{\hei 步骤} {\bf 2.} 重复步骤2直到满足迭代停止条件.
+
+{\hei 步骤} {\bf 2.1.} ${{\pmb g}^{n}={\Phi}^{\rm T}{\pmb
+r}^{n-1}}$;
+
+{\hei 步骤} {\bf 2.2.} ${{g}_{\rm max}={\rm
+max}_{i=1,2,\cdots,N}|{g}^{n}_{i}|}$, 将所有符合条件
+$|{g}^{n}_{i}|\ge\beta {g}_{\rm
+max}$的原子索引$i$增加到原子集合${{I}^{n}}$中,即${I}^{n}$ $=$ $\{i:$
+$|{g}^{n}_{i}|$ $\ge$ $\beta {g}_{\rm max} \}$, $\beta \in (0,1]$;
+
+{\hei 步骤} {\bf 2.3.} ${{\Gamma}^{n}={\Gamma}^{n-1}\cup {I}^{n}}$;
+
+{\hei 步骤} {\bf 2.4.} 计算更新方向${{\pmb
+d}_{{\Gamma}^{n}}}$,计算步长 ${\alpha}^{n}=\langle {\pmb r}^{n}$, ${
+\Phi}_{{\Gamma}^{n}}{\pmb d}_{{\Gamma}^{n}} \rangle/{\|{
+\Phi}_{{\Gamma}^{n}}{\pmb d}_{{\Gamma}^{n}}\|}^{2}_{2}$;
+
+{\hei 步骤} {\bf 2.5.} 更新估计信号${{\hat{\pmb
+x}}^{n}_{{\Gamma}^{n}}={{\hat{\pmb x}}^{n-1}_{{\Gamma}^{n}}} +
+{\alpha}^{n} {\pmb d}_{{\Gamma}^{n}}}$;
+
+{\hei 步骤} {\bf 2.6.} 更新观测信号余量${{\pmb r}^{n}={\pmb
+r}^{n-1}-{\alpha}^{n}{\Phi}_{{\Gamma}^{n}}{\pmb d}_{{\Gamma}^{n}}}$,
+ $n$ $=$ $n$ $+$ $1$;
+
+{\hei 步骤} {\bf 2.7.} 输出${\hat{\pmb x}}^{n}$, ${\pmb r}^{n}$.
+
+在CGP算法中, 更新方向采用的是共轭梯度方向, 即更新方向集合${\{ {\pmb
+d}_{1},{\pmb d}_{2},\cdots,{\pmb d}_{n}\}}$是$G$共轭的,
+对于更新方向集合中任意两个不同的更新方向有: ${\pmb d}^{\rm
+T}_{n}{G}{{\pmb d}_{m}}=0$ $(G={\Phi}^{\rm T}{\Phi}$, $n$ $\ne$
+$m)$. 关于CGP算法中更新方向和步长的详细信息参见文献[6].
+
+CGP算法的步骤2.2给出了每次迭代时的原子选择准则,即分段弱阈值方法的原子选择准则.~${\beta
+\in (0,1]}$是一个阈值参数,
+每次迭代都会选择满足条件的一组原子,~${\beta}$值越大,
+每次选择的原子数量越少. 当${\beta=1}$时, 每次迭代时只选择一个原子,
+如ACGP算法, 这与MP和OMP算法的原子选择准则一致. 当${0<\beta<1}$ 时,
+对应于SWCGP算法. 采用分段弱阈值方法的原子选择准则, 减少了迭代次数,
+加快了算法速度.
+
+\section{谱投影梯度追踪法}
+CGP算法是对传统MP类算法的有效扩展,
+方向追踪方法的引进减少了每次迭代时的计算量,
+比传统MP类算法更适合于解决大尺度问题. 与此同时,
+CGP算法也存在一些问题: 1) 当矩阵$G$稀疏时,
+该算法容易收敛到局部最优解, 影响了信号的重建精度; 2)
+在更新方向的选择上, 该算法只选择了一个与当前方向共轭的方向,
+而文献[9]的研究表明,
+选取两个与当前方向共轭的方向作为更新方向能取得更好的效果. 因此,
+基于方向追踪的匹配追踪方法仍然有很多问题,
+不同的更新方向和步长计算方法需要进一步研究.
+本文借鉴CGP算法采用的方向追踪框架, 将谱投影梯度方向作为更新方向,
+提出一种新的方向追踪算法, 即接下来介绍的SPGP算法.
+
+\subsection{算法原理}
+求解式(1)的二次代价函数为
+%公式8
+\begin{equation}
+f(\pmb x)=\frac{1}{2} {\|\pmb y - {\Phi}\pmb x\|}^{2}_{2}
+\end{equation}
+根据SPG方法, 求解CS问题可以写为
+%公式9
+\begin{equation}
+{\rm min}_{\pmb x}f(\pmb x)\quad {\rm s.\,t.}~~{\pmb x}\in{\Omega}
+\end{equation}
+其中, ${\Omega}$是一个闭凸集, 定义投影算子${P(\pmb c)}$是向量${\pmb
+c}$在${\Omega}$上的正交投影. 参考文献[10]关于SPG算法中${P(\pmb
+c)}$的定义, 得到:
+\begin{align}
+&P_{\tau}(\pmb c)=\arg \min\limits_{\pmb x}{\|\pmb c - \pmb x\|}_{2}
+\nonumber \\
+ {\rm s.\,t.}\quad &{\|\pmb x\|}_{1}\le{\tau}
+\end{align}
+$\tau$代表的是$\rm1$范数球的半径, 此时有$\Omega=\{\pmb x|~\|\pmb
+x\|_{1}\le \tau\}$.将$f(\pmb x)$对$\pmb x$求导, 得到其梯度方向:
+%公式11
+\begin{equation}
+\pmb g=\bigtriangledown f(\pmb x)=\bigtriangledown\left[\frac{1}{2}
+{(\pmb y - {\Phi}\pmb x)}^{\rm T}{(\pmb y - {\Phi}\pmb
+x)}\right]=-{\Phi}^{\rm T}(\pmb y - {\Phi}\pmb x)
+\end{equation}
+参考式(5), 则在第$n$次迭代中有${{\pmb g}^{n}=-{\Phi}^{\rm T}{\pmb
+r}^{n-1}}$. 给定${P(\pmb c)}$和${{\pmb g}^{n}}$,
+本文提出的SPGP算法的更新方向为
+%公式12
+\begin{equation}
+{\pmb d}^{n}=P_{\tau}({\hat {\pmb x}}^{n-1}-{\alpha}^{n-1}{\pmb
+g}^{n-1})-{\hat {\pmb x}}^{n-1}
+\end{equation}
+其中,
+${{\alpha}^{n}=\min({\alpha}_{\max},\max({\alpha}_{\min},{\alpha}^{n}_{BB}))}$是每次迭代时的步长,
+${{\alpha}^{n}_{BB}}$ 是Barzilai-Borwein
+(BB)步长,也称为谱步长\,\!$^{[11]}$. ${\alpha}_{\max}$ $=$
+$10^{10}$和${{\alpha}_{\min}=10^{-10}}$是两个初始化参数.
+定义$\bigtriangleup {\pmb x}^{n}$ $=$ ${\hat {\pmb x}}^{n}-{\hat
+{\pmb x}}^{n-1}$和${\bigtriangleup {\pmb g}^{n}={\pmb g}^{n}- {\pmb
+g}^{n-1}}$, 则有
+%公式13
+\begin{equation}
+{\alpha}^{n}_{BB}=\frac {\langle {\bigtriangleup {\pmb x}^{n}},
+{\bigtriangleup {\pmb x}^{n}} \rangle} { \langle {\bigtriangleup
+{\pmb g}^{n}}, {\bigtriangleup {\pmb x}^{n}} \rangle}
+\end{equation}
+在迭代开始前,
+将步长初始化为${{\alpha}^{0}\in[{\alpha}_{\min},{\alpha}_{\max}]}$,给定搜索历史长度${L\geq1}$和充分下降参数${\gamma\in(0,1)}$.
+$L$值的大小决定了线性搜索的单调性,~~$L=1$时, 算法是严格单调的,
+随着$L$值的增大, 算法的非单调性增强. 在初始化相关参数后,
+SPGP算法的流程如下:
+
+{\hei 步骤} {\bf 1.} 初始化: ${{\hat{\pmb x}}^{0}=\pmb 0}$, ${{\pmb
+r}^{0}=\pmb y}$, ${{\Gamma}^{0}=\emptyset}$, ${{\pmb
+g}^{0}=-{\Phi}^{\rm T}{\pmb r}^{0}}$, $n$ $=$ $1$.
+
+{\hei 步骤} {\bf 2.} 重复步骤2直到满足迭代停止条件.
+
+{\hei 步骤} {\bf 2.1.}  ${{g}_{\rm max}={\rm
+max}_{i=1,2,\cdots,N}|{g}^{n}_{i}|}$,将所有符合条件 $|{g}^{n}_{i}|$
+$\ge$ $\beta {g}_{\rm
+max}$的原子索引$i$增加到原子集合${{I}^{n}}$中,即 ${I}^{n}=$ $\{i:$
+$|{g}^{n}_{i}|\ge \beta {g}_{\rm max} \}$, ${\beta \in (0,1]}$.
+
+{\hei 步骤} {\bf 2.2.}  ${{\Gamma}^{n}={\Gamma}^{n-1}\cup {I}^{n}}$.
+
+{\hei 步骤} {\bf 2.3.}  采用非单调线性搜索策略计算${{\pmb d}^{n}}$,
+${{\hat{\pmb x}}^{n}}$, ${{\pmb r}^{n}}$.
+
+{\hei 步骤} {\bf 2.3.1.}  ${{\pmb d}^{n}=P_{\tau}({\hat{\pmb
+x}}^{n-1}-{\alpha}^{n-1}{\pmb g}^{n-1})-{\hat{\pmb x}}^{n-1}}$;
+
+{\hei 步骤} {\bf 2.3.2.} ${{\hat{\pmb
+x}}^{n}_{{\Gamma}^{n}}={{\hat{\pmb x}}^{n-1}_{{\Gamma}^{n}} + {\pmb
+d}^{n}_{{\Gamma}^{n}}}}$;
+
+{\hei 步骤} {\bf 2.3.3.} ${{\pmb r}^{n}=\pmb y -
+{\Phi}_{{\Gamma}^{n}} {\hat{\pmb x}}^{n}_{{\Gamma}^{n}}}$;
+
+{\hei 步骤} {\bf 2.3.4.} 如果满足条件
+\begin{equation*}
+{\|{\pmb r}^{n}\|}^{2}_{2}\leq \max_{0\leq j \leq \min(n,L-1)}
+{{\|{\pmb r}^{n-j}\|}^{2}_{2} + \gamma \langle {\hat{\pmb
+x}}^{n}-{\hat{\pmb x}}^{n-1}, {{\pmb g}^{n-1}}
+\rangle}\end{equation*} 则转至步骤2.4,否则${\alpha}^{n-1}$ $=$
+${\alpha}^{n-1}/2$,重复步骤2.3;
+
+{\hei 步骤} {\bf 2.4.} ${{\pmb g}^{n}=-{\Phi}^{\rm T}{\pmb r}^{n}}$.
+
+{\hei 步骤} {\bf 2.5.} 计算${{\alpha}^{n}_{BB}}$, ${{\alpha}^{n}}$,
+${n=n+1}$.
+
+{\hei 步骤} {\bf 3.}  输出${{\hat{\pmb x}}^{n}}$, ${{\pmb r}^{n}}$.
+
+本文提出的SPGP算法的原子选择准则与CGP算法一致,
+如SPGP算法流程中的步骤2.1所示. 当${\beta=1}$时, 称为SPGP算法,
+当${0<\beta<1}$时,
+将此时的SPGP算法称为分段弱阈值谱投影梯度追踪(Stagewise weak spectral
+projected gradient pursuit, SWSPGP)算法.
+
+\subsection{算法性能分析}
+比较CGP算法和SPGP算法的流程, 两种算法都需要计算${{\Phi}^{\rm T}{\pmb
+r}}$,将其计算复杂度计为${{\rm O}(\Phi)}$,表示矩阵与向量乘积的复杂度.
+此外, 为了寻找${|\pmb g|}$中的最大值, 计算复杂度为${{\rm O}(N)}$.
+在计算更新方向时, CGP算法还需要两次矩阵与向量乘积, 复杂度为${{\rm
+O}(\Phi)}$. SPGP算法需要进行一次投影算子${P(\pmb c)}$的计算,
+在最坏的情况下其计算复杂度为${{\rm O}(N\log N)}$$^{[10]}$,
+但是文献[10]中通过数值实验表明一般情况下该投影算子的计算复杂度要远小于${{\rm
+O}(N\log N)}$.在计算步长时, 两种算法的计算复杂度均为${{\rm
+O}(M)}$.更新估计信号${{\hat{\pmb
+x}}_{{\Gamma}^{n}}}$和更新观测信号余量${\pmb r}$时,
+两种算法的计算复杂度也一致, 分别为${{\rm O}(l)}$和${{\rm
+O}(M)}$,其中$l$是${{\hat{\pmb x}}_{{\Gamma}^{n}}}$的长度.
+需要注意的是, SPGP算法的步骤2.3可能需要多次执行,
+步骤2.3.4的判断条件保证了最多重复执行$L$次步骤2.3,
+就会产生一个充分下降的更新方向, 实验中取$L=3$,
+既保证了算法的非单调性, 同时算法的计算复杂度也不会太大.
+
+考虑到各标量间的大小关系,
+CGP算法和SPGP算法的计算复杂度在同一个数量级上, 为${{\rm O}(\Phi)}$.
+这也与目前大多数MP类算法的计算复杂度一致, 如压缩采样匹配追踪
+(Compressive sampling matching pursuit, CoSaMP)算法\,\!$^{[12]}$,
+正则正交匹配追踪 (Regularized orthogonal matching pursuit,
+ROMP)算法\,\!$^{[13-14]}$, 子空间追踪 (Subspace pursuit,
+SP)算法\,\!$^{[15]}$等.
+CGP算法与SPGP算法最大的不同在于对更新方向和步长的计算方法上,
+CGP算法只选择了一个与当前方向共轭的方向,
+但该方向的选择不一定能达到最好的精度\,\!$^{[9]}$.
+SPGP算法使用非单调线性搜索策略,
+通过与搜索历史中$L$个方向作比较,得到一个总体上保持代价函数下降趋势的最优更新方向,
+保证了SPGP算法的全局收敛性.
+关于SPGP算法收敛性的详细理论证明,可以参考文献[8,\,16]等关于SPG算法的收敛性证明.
+
+\section{实验结果}
+为了与已有经典算法进行比较, 采用Tsaig等提出的Multiscale
+CS方案\,\!$^{[17]}$对图像进行重建, 实验中采用尺度为512像素 $\times$
+512像素的Mondrian图像. 将图像在与其类型相适应的Haar小波基下展开,
+粗尺度设为$4$, 细尺度设为$6$,
+${\Phi}$是从均匀分布的单位球上采样得到. 以相对误差(${\rm Rerr}$,
+$\rm Rerr$ $=$ $({\|{\hat{\pmb x}}- \pmb x \|}_{2})/{\|\pmb x
+\|}_{2}$)和算法时间($T$, 单位: s)来衡量算法的性能.
+实验依据算法每次迭代时原子选择准则的不同分为两类,
+分别在传统原子选择准则(实验1)和分段弱阈值原子选择准则 (实验2)
+下进行实验, 并与相对应的经典算法进行比较. 所有实验都是在Matlab
+R2009a环境下完成, 计算机的CPU是E7500 2.93\,GHz, 内存大小为2.00\,GB.
+
+\subsection{实验1}
+
+传统原子选择准则是传统MP类算法(如MP和OMP算法)所采用的原子选择方法,
+每次迭代时只从过完备原子库里选择与观测信号余量最匹配的一个原子,
+如式(2)所示. 在CGP算法中和SPGP算法中对应于阈值参数${\beta=1}$,
+实验中CGP算法采用的是该类算法中最优的ACGP算法.
+
+在传统原子选择准则下,
+经典算法和本文算法对Mondrian图像的重建结果如图1所示,各算法的采样数$k$
+$=$ $2\,713$. 图1\,(a)是MP算法的重建结果, ${\rm Rerr}=0.17445$, ${
+T}$ $=$ $17.38\,{\rm s}$. 图1\,(b)是OMP算法的重建结果, ${\rm Rerr}$
+$=$ $0.16937$, ${{T}=31.56\,{\rm s}}$, OMP算法采用的是QR分解.
+图1\,(c)是ACGP算法的重建结果, ${\rm Rerr}$ $=$ $0.16947$, ${ T}$ $=$
+$18.11\,{\rm s}$. 图1\,(d)是SPGP算法的重建结果, ${\rm Rerr}$ $=$
+$0.16930$, ${{T}=9.55\,{\rm s}}$. 由实验结果可以看出,
+ACGP算法的重建结果与OMP算法接近并且都优于MP算法,
+这一结果与文献[6]中给出的结论一致,
+ACGP算法的重建时间与MP算法接近并且少于基于QR分解的OMP算法.
+本文提出的SPGP算法与以上经典算法相比重建误差最小,
+同时算法时间也大幅减少, 约为MP算法和ACGP算法的一半.
+
+ \vskip5mm
+\begin{center}
+   \begin{minipage}{0.22\textwidth}
+   \centering
+   \subfigure{\includegraphics{1(a).eps}}\\
+   {\footnotesize (a) MP, $k=2\,713$}
+   \end{minipage}
+   \begin{minipage}{0.22\textwidth}
+   \centering
+   \subfigure{\includegraphics{1(b).eps}}\\
+   {\footnotesize (b) OMP, $k=2\,713$}
+   \end{minipage}\\[4mm]
+   \begin{minipage}{0.22\textwidth}
+   \centering
+   \subfigure{\includegraphics{1(c).eps}}\\
+   {\footnotesize (c) ACGP, $k=2\,713$}
+   \end{minipage}
+   \begin{minipage}{0.22\textwidth}
+   \centering
+   \subfigure{\includegraphics{1(d).eps}}\\
+   {\footnotesize (d) SPGP, $k=2\,713$}
+   \end{minipage}
+   \vskip2mm
+   {\small 图1\quad 传统原子选择准则下各算法对Mondrian图像的重建结果
+\\ Fig.\,1\quad  The reconstructed results of  Mondrian image using different
+algorithms under traditional element selection strategy}
+\end{center}
+%   \vskip5mm
+
+\subsection{实验2}
+与传统原子选择准则每次迭代时只选取一个最匹配原子不同,
+采用分段弱阈值原子选择准则的算法每次迭代时会选取满足阈值条件的一组原子.
+StOMP算法有CFDR和CFAR两种阈值设置方法, 具体内容参见文献[5],
+实验中最大迭代次数${S=30}$, 阈值参数为$q$.
+SWCGP算法和SWSPGP算法的阈值参数为$\beta$ $(0<\beta<1)$.
+实验中SWCGP算法和SWSPGP算法的原子选择准则是一致的,
+在相同的阈值参数${\beta}$下实验结果具有可比性.
+而StOMP算法的原子选择准则与这两种算法不一致,
+因此只具有一定的参考意义.
+
+在分段弱阈值原子选择准则下,
+经典算法和本文算法对Mondrian图像的重建结果如图2所示,各算法的采样数$k$
+$=$ $2\,713$.
+图2\,(a)是阈值参数${q=0.85}$的StOMP-CFDR算法的重建结果, ${{\rm
+Rerr}=0.17098}$, ${{T}=18.95\,{\rm s}}$.
+图2\,(b)是阈值参数${q=0.5M/NS}$的StOMP-CFAR算法的重建结果, ${\rm
+Rerr}$ $=$ $0.16938$, ${{T}=20.18\,{\rm s}}$.
+图2\,(c)是阈值参数${\beta=0.85}$的SWCGP算法的重建结果, ${{\rm
+Rerr}=0.16927}$, ${{T}=6.31\,{\rm s}}$.
+图2\,(d)是阈值参数${\beta=0.85}$的SWSPGP算法的重建结果, ${\rm Rerr}$
+$=$ $0.16918$, ${{T}=2.39\,{\rm s}}$.
+实验结果表明,当采用分段弱阈值原子选择准则时,
+SWSPGP算法与SWCGP算法相比具有更小的相对误差和更少的算法时间.
+虽然SWSPGP算法与StOMP算法的实验结果不是在严格相同的条件下得到的,
+但是从实验数据可以看出,
+SWSPGP算法用比StOMP算法少得多的算法时间得到的重建图像具有更小的相对误差,
+可以说SWSPGP算法比StOMP算法更有优势. 同时从算法时间上看,
+由于SWSPGP算法每次迭代时选取的原子数增加,
+因此与SPGP算法相比能够更快完成图像重建.
+
+ \vskip5mm
+\begin{center}
+   \begin{minipage}{0.22\textwidth}
+   \centering
+   \subfigure{\includegraphics{2(a).eps}}\\
+   {\footnotesize (a) StOMP-CFDR, $k=2\,713$}
+   \end{minipage}
+   \begin{minipage}{0.22\textwidth}
+   \centering
+   \subfigure{\includegraphics{2(b).eps}}\\
+   {\footnotesize (b) StOMP-CFAR, $k=2\,713$}
+   \end{minipage}\\[4mm]
+   \begin{minipage}{0.22\textwidth}
+   \centering
+   \subfigure{\includegraphics{2(c).eps}}\\
+   {\footnotesize (c) SWCGP, $k=2\,713$}
+   \end{minipage}
+   \begin{minipage}{0.22\textwidth}
+   \centering
+   \subfigure{\includegraphics{2(d).eps}}\\
+   {\footnotesize (d) SWSPGP, $k=2\,713$}
+   \end{minipage}
+   \vskip2mm
+   {\small 图2\quad 分段弱阈值原子选择准则下各算法对Mondrian\\图像的重建结果
+\\ Fig.\,2\quad  The reconstructed results of  Mondrian image
+using different algorithms under stagewise weak element \\selection
+strategy}
+\end{center}
+   \vskip0mm
+
+
+为了与现有优秀的MP类算法进行比较, 实验中还给出了CoSaMP算法、
+ROMP算法、SP算法的实验结果. 这三种算法都需要事先给出信号的稀疏度$K$,
+每次迭代时, CoSaMP算法会增加$2K$个候选原子,
+ROMP算法和SP算法会增加$K$个候选原子.
+根据Needell在文献[18]中给出的建议, 将稀疏度估计为${K=M/\log N}$.
+由于这三种算法并不是按照分段弱阈值原子选择准则进行原子的选择,
+因此这三种算法的实验结果单独在图3中给出,各算法的采样数${k=2\,713}$,为了方便比较,图中还给出了SWSPGP算法的重建结果.
+图3\,(a)是CoSaMP算法的重建结果, ${{\rm Rerr}=0.17898}$,
+${{T}=2.16\,{\rm s}}$.图3\,(b)是ROMP算法的重建结果, ${{\rm
+Rerr}=0.17407}$, ${{T}=6.64\,{\rm s}}$.图3(c)是SP算法的重建结果,
+${{\rm Rerr}=0.18031}$, ${{ T}=15.69\,{\rm s}}$.
+图3\,(d)是阈值参数${\beta=0.85}$的SWSPGP算法的重建结果, ${{\rm
+Rerr}=0.16918}$, ${T}$ $=$ $2.39\,{\rm s}$.从算法时间上看,
+CoSaMP算法比SWSPGP算法略快, 但是重建误差比SWSPGP算法大,
+另外两种算法无论是算法时间还是重建误差, 都没有SWSPGP算法理想. 因此,
+从实验结果来看, SWSPGP算法与现有MP类优秀算法相比仍然具有优势.
+
+
+ \vskip3mm
+\begin{center}
+   \begin{minipage}{0.22\textwidth}
+   \centering
+   \subfigure{\includegraphics{3(a).eps}}\\
+   {\footnotesize (a) CoSaMP, $k=2\,713$}
+   \end{minipage}
+   \begin{minipage}{0.22\textwidth}
+   \centering
+   \subfigure{\includegraphics{3(b).eps}}\\
+   {\footnotesize (b) ROMP, $k=2\,713$}
+   \end{minipage}\\[4mm]
+   \begin{minipage}{0.22\textwidth}
+   \centering
+   \subfigure{\includegraphics{3(c).eps}}\\
+   {\footnotesize (c) SP, $k=2\,713$}
+   \end{minipage}
+   \begin{minipage}{0.22\textwidth}
+   \centering
+   \subfigure{\includegraphics{3(d).eps}}\\
+   {\footnotesize (d) SWSPGP, $k=2\,713$}
+   \end{minipage}
+   \vskip2mm
+   {\small  图3\quad CoSaMP, ROMP, SP, SWSPGP对Mondrian\\图像的重建结果
+\\ Fig.\,3\quad  The reconstructed results of  Mondrian image using CoSaMP, ROMP,
+SP, SWSPGP}
+\end{center}
+   \vskip0mm
+
+
+表1列出了阈值参数${\beta}$取不同值时SWSPGP算法得到的实验数据(表1中的实验和图1以及图2的实验不是同一次实验,
+由于每次实验中${\Phi}$等关键参数的生成具有随机性,
+因此重建结果略有差别, 但不影响每次实验结论的正确性).
+由表中数据可以看出, 随着${\beta}$值的增大, 每次迭代选取的原子数减少,
+算法需要更多时间完成图像重建, 但是每次迭代所选择原子的正确性提高,
+因此相对误差会减小, 相应的重建图像的精度会提高. 当${\beta=1}$时,
+该算法即为SPGP算法,
+重建图像的相对误差与${\beta=0.9}$时SWSPGP算法得到的实验结果非常接近,
+但是算法时间大概是其\,$3$\,倍.\!\hfill 确定阈值参数\vskip3mm
+
+\vbox{\centering{\small 表1\quad SWSPGP算法在不同阈值下的实验结果
+\\
+Table 1 \quad Experimental results of SWSPGP with different
+thresholding values } \vskip2mm
+\renewcommand{\baselinestretch}{1.35}
+{\footnotesize\centerline{\tabcolsep=4pt\begin{tabular*}{0.475\textwidth}{cccccc}
+\toprule
+$\beta$    &      0.6     &     0.7     &     0.8     &     0.9     &      1 \\
+\hline
+$T$(s)      &      0.36     &    0.50     &    1.02     &    2.95     &    9.41 \\
+Rerr       &   0.1837057  &  0.1702613  &  0.1693667  &  0.1692977  &  0.1692971\\
+\bottomrule
+\end{tabular*}}\vskip1mm}}\vskip3mm
+
+
+\noindent ${\beta}$的取值, 主要依据通过实验获得的经验,
+根据表1给出的结果, 阈值参数${\beta}$在${\beta \in
+[0.8,\,0.9]}$范围内取值时能够较好的平衡算法时间和重建精度这两个关键指标.
+在实际应用中, 可以根据对算法时间或者重建精度的侧重不同,
+适当减小或增大阈值参数${\beta}$的取值.
+
+\section{总结}
+
+压缩感知理论近年来吸引了研究人员的广泛关注\,\!$^{[19-21]}$,
+在图像处理中, 压缩感知理论被引入到图像编码\,\!$^{[22]}$、 雷达成
+ 像\,\!$^{[23-25]}$、 医学成像等众多领域\,\!$^{[26-27]}$.
+随着压缩感知理论研 究的不断深入, 对于重建算法的要求越来越高.
+为了有效求解压缩感知理论中大尺度信号如图像的重建问题,
+本文提出了基于谱投影梯度追踪的压缩感知重建算法.
+该算法以方向追踪算法为框架, 以谱投影梯度方向作为算法的更新方向,
+是一种新的方向追踪算法. 通过实验对本文算法与已有经典算法进行比较,
+实验结果证明了本文算法具有较好的重建精度, 并且所需算法时间更少,
+是一种有效的压缩感知重建算法.
+
+
+
+\begin{thebibliography}{99}
+\zihao{6} \addtolength{\itemsep}{-0.0em} \urlstyle{rm}
+
+\bibitem{1} Candes E， Romberg J, Tao T. Robust uncertainty principles: exact signal reconstruction from highly incomplete frequency information. \textsl{IEEE Transactions on Information Theory}, 2006, \textbf{52}(2): 489$-$509
+
+\bibitem{2} Donoho D L. Compressed sensing. \textsl{IEEE Transactions on Information Theory}, 2006, \textbf{52}(4): 1289$-$1306
+
+\bibitem{3} Mallat S G, Zhang Z F. Matching pursuits with time-frequency dictionaries. \textsl{IEEE Transactions on Signal Processing}, 1993, \textbf{41}(12): 3397$-$3415
+
+\bibitem{4} Tropp J A, Gilbert A C. Signal recovery from random measurements via orthogonal matching pursuit. \textsl{IEEE Transactions on Information Theory}, 2007, \textbf{53}(12): 4655$-$4666
+
+\bibitem{5} Donoho D L, Tsaig Y, Drori I, Starck J L. Sparse Solution of Underdetermined Linear Equations by Stagewise Orthogonal Matching Pursuit, Technical Report No. 2006-2, Department of Statistics, Stanford University, USA, 2006
+
+\bibitem{6} Blumensath T, Davies M E. Gradient pursuits. \textsl{IEEE Transactions on Signal Processing}, 2008, \textbf{56}(6): 2370$-$2382
+
+\bibitem{7} Blumensath T, Davies M E. Stagewise weak gradient pursuits.
+\textsl{IEEE Transactions on Signal Processing}, 2009,
+\textbf{57}(11): 4333$-$4346
+
+\bibitem{8} Birgin E G, Mart\'{\i}nez J M, Raydan M. Nonmonotone spectral projected gradient methods on convex sets. \textsl{SIAM Journal on Optimization}, 2000, \textbf{10}(4): 1196$-$1211
+
+\bibitem{9} Gan Wei, Xu Lu-Ping, Su Zhe. A recovery-algorithm for compressed sensing. \textsl{Journal of Electronics and Information Technology}, 2010, \textbf{32}(9): 2151$-$2155 \\
+(甘伟, 许录平, 苏哲. 一种压缩感知重构算法. 电子与信息学报, 2010,
+\textbf{32}(9): 2151$-$2155)
+
+\bibitem{10} Van den Berg E, Friedlander M P. Probing the pareto frontier for basis pursuit solutions. \textsl{SIAM Journal on Scientific Computing}, 2008, \textbf{31}(2): 890$-$912
+
+\bibitem{11} Barzilai J, Borwein J M. Two-point step size gradient methods. \textsl{IMA Journal of Numerical Analysis}, 1988, \textbf{8}(1): 141$-$ 148
+
+\bibitem{12} Needell D, Tropp J A. CoSaMP: iterative signal recovery from incomplete and inaccurate samples. \textsl{Applied and Computational Harmonic Analysis}, 2009, \textbf{26}(3): 301$-$321
+
+
+\bibitem{13} Needell D, Vershynin R. Uniform uncertainty principle and signal recovery via regularized orthogonal matching pursuit. \textsl{Foundations of Computational Mathematics}, 2009, \textbf{9}(3): 317 $-$334
+
+\bibitem{14} Needell D, Vershynin R. Signal recovery from incomplete and inaccurate measurements via regularized orthogonal matching pursuit. \textsl{IEEE Journal of Selected Topics in Signal Processing}, 2010, \textbf{4}(2): 310$-$316
+
+\bibitem{15} Dai W, Milenkovic O. Subspace pursuit for compressive sensing signal reconstruction. \textsl{IEEE Transactions on Information Theory}, 2009, \textbf{55}(5): 2230$-$2249
+
+\bibitem{16} Wang C Y, Liu Q, Yang X M. Convergence properties of nonmonotone spectral projected gradient methods. \textsl{Journal of Computational and Applied Mathematics}, 2005, \textbf{182}(1): 51$-$66
+
+\bibitem{17} Tsaig Y, Donoho D L. Extensions of compressed sensing. \textsl{Signal Processing}, 2006, \textbf{86}(3): 549$-$571
+
+\bibitem{18} Needell D. Topics in Compressed Sensing [Ph.\,D. dissertation], University of California, USA, 2009
+
+\bibitem{19} Fang Hong, Yang Hai-Rong. Greedy algorithms and compressed sensing.
+\textsl{Acta Automatica Sinica}, 2011, \textbf{37}(12): 1413 $-$1421 \\
+(方红, 杨海蓉. 贪婪算法与压缩感知理论. 自动化学报, 2011,
+\textbf{37}(12): 1413$-$1421)
+
+\bibitem{20} Dai Qiong-Hai, Fu Chang-Jun, Ji Xiang-Yang. Research on compressed sensing. \textsl{Chinese Journal of Computers}, 2011, \textbf{34}(3): 425$-$434 \\
+(戴琼海, 付长军, 季向阳. 压缩感知研究. 计算机学报, 2011,
+\textbf{34}(3): 425$-$434)
+
+\bibitem{21} Jiao Li-Cheng, Yang Shu-Yuan, Liu Fang, Hou Biao. Development and prospect of compressive sensing. \textsl{Acta Electronica Sinica}, 2011, \textbf{39}(7): 1651$-$1662 \\
+(焦李成, 杨淑媛, 刘芳, 侯彪. 压缩感知回顾与展望. 电子学报, 2011,
+\textbf{39}(7): 1651$-$1662)
+
+\bibitem{22} Pan Rong, Liu Yu, Hou Zheng-Xin, Wang Shao-Chu. Image coding and reconstruction via compressed sensing based on partial DCT coefficients.
+\textsl{Acta Automatica Sinica}, 2011, \textbf{37}(6): 674$-$681 \\
+(潘榕, 刘昱, 侯正信, 汪少初.
+基于局部DCT系数的图像压缩感知编码与重构. 自动化学报, 2011,
+\textbf{37}(6): 674$-$681)
+
+\bibitem{23} He Chu, Liu Ming, Feng Qian, Deng Xin-Ping. PolInSAR image classification based on compressed sensing and multi-scale pyramid. \textsl{Acta Automatica Sinica}, 2011, \textbf{37}(7): 820$-$ 827 \\
+(何楚, 刘明, 冯倩, 邓新萍.
+基于多尺度压缩感知金字塔的极化干涉SAR图像分类. 自动化学报, 2011,
+\textbf{37}(7): 820$-$827)
+
+\bibitem{24} Xu J, Pi Y, Cao Z. Bayesian compressive sensing in synthetic aperture radar imaging. \textsl{IET Radar, Sonar and Navigation}, 2012, \textbf{6}(1): 2$-$8
+
+\bibitem{25} Zhao G H, Wang Z Y, Wang Q, Shi G M, Shen F F. Robust ISAR imaging based on compressive sensing from noisy measurements. \textsl{Signal Processing}, 2012, \textbf{92}(1): 120$-$129
+
+\bibitem{26} Haldar J P, Hernando D, Liang Z P. Compressed-sensing MRI with random encoding. \textsl{IEEE Transactions on Medical Imaging}, 2011, \textbf{30}(4): 893$-$903
+
+\bibitem{27} Chen Y M, Hager W, Huang F, Phan D, Ye X J, Yin W T. Fast algorithms for image reconstruction with application to partially parallel MR imaging. \textsl{SIAM Journal on Imaging Sciences}, 2012, \textbf{5}(1): 90$-$118
+
+
+\end{thebibliography}
+
+\begin{biographynophoto}
+\noindent{\hei 李志林 }\quad 北京交通大学电子信息工程学院博士研究生.
+主要研究方向为数字图像处理,压缩感知理论. 本文通信作者. \\
+E-mail: 07111004@bjtu.edu.cn
+
+\noindent({\bf LI Zhi-Lin }\quad Ph.\,D. candidate at the School of
+Electronics and Information Engineering, Beijing Jiaotong
+University. His research interest covers digital image processing
+and compressed sensing. Corresponding author of this paper.)
+\end{biographynophoto}
+
+\begin{biographynophoto}
+\noindent{\hei 陈后金 }\quad 北京交通大学电子信息工程学院教授.
+主要研究方向为信号与信息处理, 数字图像处理. E-mail:
+hjchen@bjtu.edu.cn
+
+\noindent({\bf CHEN Hou-Jin }\quad Professor at the School of
+Electronics and Information Engineering, Beijing Jiaotong
+University. His research interest covers signal and information
+processing, and digital image processing.)
+\end{biographynophoto}
+
+\begin{biographynophoto}
+\noindent{\hei 姚\hskip2.5mm畅 }\quad
+北京交通大学电子信息工程学院讲师. 主要研究方向为生物医学图像处理.
+E-mail: 06111029@bjtu.edu.cn
+
+\noindent({\bf YAO Chang }\quad  Lecturer at the School of
+Electronics and Information Engineering, Beijing Jiaotong
+University. His main research interest is biomedical image
+processing.)
+\end{biographynophoto}
+
+\begin{biographynophoto}
+\noindent{\hei 李居朋 }\quad 北京交通大学电子信息工程学院讲师.
+主要研究方向为生物医学图像处理. E-mail: 04111034@bjtu.edu.cn
+
+\noindent({\bf LI Ju-Peng }\quad Lecturer at the School of
+Electronics and Information Engineering, Beijing Jiaotong
+University. His main research interest is biomedical image
+processing.)
+\end{biographynophoto}
+
+\vskip2mm\hrule
+
+\end{document}

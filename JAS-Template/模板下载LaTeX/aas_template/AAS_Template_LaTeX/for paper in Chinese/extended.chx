@@ -1,0 +1,277 @@
+%& -no-cctspace
+%
+% $Id: extended.chx,v 1.1.1.1 2005/08/28 05:40:04 zlb Exp $
+%
+% This is the file extended.chx, which is a modified version of the file
+% extended.chr of the CJK package for use with CJKpunct.sty.
+%
+% Original file created by Werner Lemberg <wl@gnu.org>
+%
+% Modified by Wenchang Sun (sunwch@hotmail.com)
+%
+% Version 4.5.2 (13-Feb-2003)
+
+\def\fileversion{4.5.2}
+\def\filedate{2004/05/22}
+\ProvidesFile{extended.chx}[\filedate\space\fileversion]
+
+
+% define macros for handling extended encodings (GBK, Big5+).
+
+\gdef\CJK@extendedChx{
+  \CJK@global\chardef\CJK@gap "07F\relax
+
+  \CJK@global\def\CJK@char##1##2##3{
+    {\ifnum ##3 < \CJK@min
+       \CJK@err
+     \else
+       \ifnum ##3 > \CJK@max
+         \CJK@err
+       \else
+
+         \CJK@testLastpunct
+         \ifCJK@
+           \CJK@charUL@group
+           \ifCJK@punctglue
+              \global\CJK@punctgluefalse
+              \unkern\unkern
+              \@tempskipa=\lastskip
+              \unskip
+              \unpenalty
+              \hskip \@tempskipa
+           \fi
+         \else
+           \CJK@testLastCJK
+           \ifCJK@
+             \CJKglue
+           \fi  
+         \fi  
+         
+         \global\CJK@lastispunctfalse 
+         
+         \@tempcnta ##3\relax
+         \ifnum ##3 > \CJK@gap
+           \advance\@tempcnta \m@ne
+         \fi
+         \advance\@tempcnta ##2\relax
+         \edef\CJK@plane{##1}
+         \usefont{\CJK@enc}{\CJK@family}{\CJK@series}{\CJK@shape}
+         \edef\reserved@a{
+           \curr@fontshape/\CJK@plane/\the\@tempcnta/\CJK@direction}
+         \expandafter\ifx\csname\reserved@a\endcsname \relax
+           \CJKsymbol{\@tempcnta}
+         \else
+           \csname\reserved@a\endcsname
+         \fi
+
+         \CJK@CJK
+       \fi
+     \fi}}
+
+% the same, but the plane crosses the font file boundary.
+
+  \CJK@global\def\CJK@charx##1##2##3##4{
+    {\ifnum ##4 < \CJK@min
+       \CJK@err
+     \else
+       \ifnum ##4 > \CJK@max
+         \CJK@err
+       \else
+
+         \CJK@testLastpunct 
+         \ifCJK@
+            \CJK@charUL@group
+            \ifCJK@punctglue 
+              \global\CJK@punctgluefalse         
+              \unkern\unkern
+              \@tempskipa=\lastskip
+              \unskip
+              \unpenalty
+              \hskip \@tempskipa
+           \fi
+         \else
+           \CJK@testLastCJK
+           \ifCJK@
+             \CJKglue
+           \fi  
+         \fi  
+         \global\CJK@lastispunctfalse
+         
+         \@tempcnta ##4\relax
+         \@tempcntb 256\relax
+         \ifnum ##4 > \CJK@gap
+           \advance\@tempcnta \m@ne
+           \advance\@tempcntb \@ne
+         \fi
+         \advance\@tempcnta ##3\relax
+         \advance\@tempcntb -##3\relax
+         \chardef\@temp \@tempcntb
+         \ifnum ##4 < \@temp
+           \edef\CJK@plane{##1}
+         \else
+           \advance\@tempcnta -256\relax
+           \edef\CJK@plane{##2}
+         \fi
+         \usefont{\CJK@enc}{\CJK@family}{\CJK@series}{\CJK@shape}
+         \edef\reserved@a{
+           \curr@fontshape/\CJK@plane/\the\@tempcnta/\CJK@direction}
+         \expandafter\ifx\csname\reserved@a\endcsname \relax
+           \CJKsymbol{\@tempcnta}
+         \else
+           \csname\reserved@a\endcsname
+         \fi
+
+         \CJK@CJK
+         
+       \fi
+     \fi}}
+
+% for punctuation.
+
+  \CJK@global\def\CJK@punctchar##1##2##3##4{
+    {
+       \ifnum ##4 < \CJK@min
+       \CJK@err
+     \else
+       \ifnum ##4 > \CJK@max
+         \CJK@err
+       \else
+
+       \CJKpunctrule     %%%  Added for CJKpunct.sty
+
+       \expandafter\ifx\csname @CJK@preglue##1\number ##4\endcsname \relax
+         \CJK@char{##2}{##3}{##4}
+       \else
+         \CJK@testLastpunct         
+         \ifCJK@
+           \expandafter\ifx\csname
+                     @CJK@kern\@CJK@lastpunct##1\number ##4\endcsname\relax
+             \ifCJK@punctglue 
+               
+               
+               \global\CJK@punctgluefalse         
+               \unkern\unkern
+               \@tempskipa=\lastskip
+               \unskip
+                 %%%%%%%%%% 2004-05-22      
+               \CJK@numbToHex{\CJK@gtemp}{##4}
+               \CJK@testPostPunct{\CJK@punctEnc}{##1}{\CJK@gtemp}
+               \ifCJK@
+               \else
+                     \unpenalty
+                     \hskip \@tempskipa
+               \fi  
+             \fi
+           \else
+             \csname @CJK@kern\@CJK@lastpunct##1\number ##4\endcsname
+           \fi      
+         \else
+          \CJK@punctUL@group
+          \csname @CJK@preglue##1\number ##4\endcsname
+         \fi
+         
+         \global\CJK@lastispuncttrue
+         \global\edef\@CJK@lastpunct{##1\number ##4}
+
+         \csname @CJK@prerule##1\number ##4\endcsname
+
+         \@tempcnta ##4\relax
+         \ifnum ##4 > \CJK@gap
+           \advance\@tempcnta \m@ne
+         \fi
+         \advance\@tempcnta ##3\relax
+         \edef\CJK@plane{##2}
+         \usefont{\CJK@enc}{\CJK@family}{\CJK@series}{\CJK@shape}
+
+         \edef\reserved@a{
+           \curr@fontshape/\CJK@plane/\the\@tempcnta/\CJK@direction}
+         \expandafter\ifx\csname\reserved@a\endcsname \relax
+           \CJKpunctsymbol{\@tempcnta}
+         \else
+           \csname\reserved@a\endcsname
+         \fi
+
+        \csname @CJK@postrule##1\number ##4\endcsname
+        \csname @CJK@postglue##1\number ##4\endcsname
+      \fi
+       \fi
+     \fi
+     }}
+
+  \CJK@global\def\CJK@punctcharx##1##2##3##4##5{
+    {
+    \ifnum ##5 < \CJK@min
+       \CJK@err
+     \else
+       \ifnum ##5 > \CJK@max
+         \CJK@err
+       \else
+
+       \CJKpunctrule     %%%  Added for CJKpunct.sty
+  
+       \expandafter\ifx\csname @CJK@preglue##1\number ##5\endcsname\relax
+         \CJK@charx{##2}{##3}{##4}{##5}
+       \else
+         \CJK@testLastpunct
+         \ifCJK@
+           \expandafter\ifx\csname
+                   @CJK@kern\@CJK@lastpunct##1\number ##5\endcsname\relax
+             \ifCJK@punctglue 
+
+                   %%%%%%%%%  modified 2004-05-22
+               \global\CJK@punctgluefalse         
+               \unkern\unkern
+               \@tempskipa=\lastskip
+               \unskip
+               \CJK@numbToHex{\CJK@gtemp}{##5}
+               \CJK@testPostPunct{\CJK@punctEnc}{##1}{\CJK@gtemp}
+               \ifCJK@
+               \else
+                     \unpenalty
+                     \hskip \@tempskipa
+               \fi  
+             \fi
+           \else
+             \csname @CJK@kern\@CJK@lastpunct##1\number ##5\endcsname
+           \fi      
+         \else
+           \CJK@punctUL@group
+           \csname @CJK@preglue##1\number ##5\endcsname
+         \fi
+
+         \global\CJK@lastispuncttrue
+         \global\edef\@CJK@lastpunct{##1\number ##5}
+         \csname @CJK@prerule##1\number ##5\endcsname
+
+         \@tempcnta ##5\relax
+         \@tempcntb 256\relax
+         \ifnum ##5 > \CJK@gap
+           \advance\@tempcnta \m@ne
+           \advance\@tempcntb \@ne
+         \fi
+         \advance\@tempcnta ##4\relax
+         \advance\@tempcntb -##4\relax
+         \chardef\@temp \@tempcntb
+         \ifnum ##5 < \@temp
+           \edef\CJK@plane{##2}
+         \else
+           \advance\@tempcnta -256\relax
+           \edef\CJK@plane{##3}
+         \fi
+         \usefont{\CJK@enc}{\CJK@family}{\CJK@series}{\CJK@shape}
+
+         \edef\reserved@a{
+           \curr@fontshape/\CJK@plane/\the\@tempcnta/\CJK@direction}
+         \expandafter\ifx\csname\reserved@a\endcsname \relax
+           \CJKpunctsymbol{\@tempcnta}
+         \else
+           \csname\reserved@a\endcsname
+         \fi
+
+        \csname @CJK@postrule##1\number ##5\endcsname
+        \csname @CJK@postglue##1\number ##5\endcsname
+      \fi  
+       \fi
+     \fi}}}
+
+\endinput
